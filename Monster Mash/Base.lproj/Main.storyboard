@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4IP-EK-K0A">
+                                <rect key="frame" x="122" y="250" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="2c6-My-nz3"/>
+                                    <constraint firstAttribute="height" constant="50" id="zTP-TD-gDD"/>
+                                </constraints>
+                                <state key="normal" title="FIGHT!"/>
+                                <connections>
+                                    <action selector="startButtonWasTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qfH-We-7FO"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="OppHealth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6F-t5-c4T">
+                                <rect key="frame" x="241" y="209" width="118" height="21"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="APf-io-ZkH"/>
+                                    <constraint firstAttribute="width" constant="150" id="xFI-h5-0VH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="OppName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zmI-WP-IgY">
+                                <rect key="frame" x="241" y="180" width="118" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="36a-Za-fhe"/>
+                                    <constraint firstAttribute="height" constant="25" id="F9u-Uj-sDN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="UserName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7T-kM-48G">
+                                <rect key="frame" x="241" y="398" width="118" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="GSa-2N-uLx"/>
+                                    <constraint firstAttribute="height" constant="25" id="ecc-l6-TGP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="UserHealth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ZU-jM-hlP">
+                                <rect key="frame" x="241" y="427" width="118" height="21"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="Dxm-jQ-bs3"/>
+                                    <constraint firstAttribute="height" constant="25" id="TbF-SH-ZAP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pW7-B1-ANc">
+                                <rect key="frame" x="258" y="456" width="84" height="30"/>
+                                <color key="backgroundColor" red="0.35468383879999998" green="0.38701777549999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Attack 1">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="attack1ButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6qy-T8-9df"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBp-gF-ST5">
+                                <rect key="frame" x="258" y="494" width="84" height="30"/>
+                                <color key="backgroundColor" red="0.35468383879999998" green="0.38701777549999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Attack 2">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="attack2ButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zMh-pc-ZLc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFK-W7-5VA">
+                                <rect key="frame" x="258" y="532" width="84" height="30"/>
+                                <color key="backgroundColor" red="0.35468383879999998" green="0.38701777549999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Attack 3">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="attack3ButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="v21-EZ-nvW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78N-R4-OeR">
+                                <rect key="frame" x="258" y="570" width="84" height="30"/>
+                                <color key="backgroundColor" red="0.35468383879999998" green="0.38701777549999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Attack 4">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="attack4ButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cIm-tE-q9X"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EpX-Q5-se8">
+                                <rect key="frame" x="241" y="52" width="120" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="HGP-AH-8l7"/>
+                                    <constraint firstAttribute="width" constant="150" id="iaT-Xl-rm0"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OjV-ds-Zvf">
+                                <rect key="frame" x="241" y="278" width="120" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="HUp-pG-SmX"/>
+                                    <constraint firstAttribute="height" constant="120" id="kVo-jz-p8l"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwV-6n-8YV">
+                                <rect key="frame" x="278" y="245" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="49V-Bh-KCD"/>
+                                    <constraint firstAttribute="width" constant="300" id="tcS-kh-Qk8"/>
+                                </constraints>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Continue Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="afterContinueButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LBw-vb-Xzw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ux-W8-6V2">
+                                <rect key="frame" x="365" y="245" width="46" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="9Jm-Zg-W2F"/>
+                                    <constraint firstAttribute="height" constant="25" id="g2f-tK-Ghc"/>
+                                </constraints>
+                                <state key="normal" title="Retaliate Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="afterRetaliateButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0nn-t1-lbb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDp-He-bI0">
+                                <rect key="frame" x="461" y="245" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.88802083333333337" green="0.83110846228188151" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="AYg-uD-J5S"/>
+                                    <constraint firstAttribute="height" constant="25" id="hBs-Yi-jg9"/>
+                                </constraints>
+                                <state key="normal" title="Restart Button">
+                                    <color key="titleColor" red="0.0" green="0.043086989639999997" blue="0.50855368590000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="afterRestartButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4ek-Sf-C3P"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pW7-B1-ANc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4T3-n1-eth"/>
+                            <constraint firstItem="4IP-EK-K0A" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KD9-tS-VZb"/>
+                            <constraint firstItem="4Ux-W8-6V2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LPy-Yb-QXb"/>
+                            <constraint firstItem="e6F-t5-c4T" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Y8A-mD-NGd"/>
+                            <constraint firstItem="OjV-ds-Zvf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ahr-BG-pJp"/>
+                            <constraint firstItem="dFK-W7-5VA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="d9b-ld-nby"/>
+                            <constraint firstItem="EpX-Q5-se8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jEo-yn-vJJ"/>
+                            <constraint firstItem="b7T-kM-48G" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="k2q-oo-jhv"/>
+                            <constraint firstItem="2ZU-jM-hlP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lpv-v7-0eQ"/>
+                            <constraint firstItem="78N-R4-OeR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mQm-9l-Bqm"/>
+                            <constraint firstItem="gwV-6n-8YV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="oFo-pA-hhi"/>
+                            <constraint firstItem="zmI-WP-IgY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sS9-KP-pXK"/>
+                            <constraint firstItem="wBp-gF-ST5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vam-hj-avU"/>
+                            <constraint firstItem="ZDp-He-bI0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="z4m-0s-JsM"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="attack1" destination="pW7-B1-ANc" id="QVH-Fs-1G0"/>
+                        <outlet property="attack2" destination="wBp-gF-ST5" id="JaF-FW-mQx"/>
+                        <outlet property="attack3" destination="dFK-W7-5VA" id="DEj-Bi-0tJ"/>
+                        <outlet property="attack4" destination="78N-R4-OeR" id="mwW-tl-ks6"/>
+                        <outlet property="continueButton" destination="gwV-6n-8YV" id="VdS-31-CHj"/>
+                        <outlet property="oppHealth" destination="e6F-t5-c4T" id="WAf-Qc-AlV"/>
+                        <outlet property="oppName" destination="zmI-WP-IgY" id="4zt-py-IQY"/>
+                        <outlet property="oppPic" destination="EpX-Q5-se8" id="Wma-Kc-17N"/>
+                        <outlet property="restartButton" destination="ZDp-He-bI0" id="hh6-KC-3dq"/>
+                        <outlet property="retaliateButton" destination="4Ux-W8-6V2" id="qqG-Bg-8Yd"/>
+                        <outlet property="startButton" destination="4IP-EK-K0A" id="Rvk-LM-7ru"/>
+                        <outlet property="userHealth" destination="2ZU-jM-hlP" id="fN1-f9-CzZ"/>
+                        <outlet property="userName" destination="b7T-kM-48G" id="9gV-7s-4ne"/>
+                        <outlet property="userPic" destination="OjV-ds-Zvf" id="Wyg-tx-z1I"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="245" y="314"/>
+        </scene>
+    </scenes>
+</document>
