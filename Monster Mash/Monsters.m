@@ -26,84 +26,130 @@
     
     if (self.monsterInt == 0) {
         
+        // Fire beats ice, loses to water. Let's add 5 to fire attack.
+        // Ice beats water, loses to fire. Let's add 10 to defense, take 5 off each attack.
+        // Water beats fire, loses to ice. With probability, lets give water better odds for landing.
+        
         self.name = @"Chomp";
-        self.health = 100;
+        self.health = 110;
+        self.element = @"❄️";
        
     }else if (self.monsterInt == 1) {
         
         self.name = @"Squak";
         self.health = 100;
+        self.element = @"🔥";
         
     }else if (self.monsterInt == 2) {
         
         self.name = @"Clops";
         self.health = 100;
+        self.element = @"💧";
         
     }else if (self.monsterInt == 3) {
         
         self.name = @"Hypno";
-        self.health = 100;
-
+        self.health = 110;
+        self.element = @"❄️";
+        
     }else if (self.monsterInt == 4) {
         
         self.name = @"Snap";
         self.health = 100;
+        self.element = @"💧";
         
     }else if (self.monsterInt == 5) {
         
         self.name = @"Fright";
         self.health = 100;
+        self.element = @"🔥";
         
     }
     
 }
 
-- (int) monsterAttack: (int) attackNumber { // attackNumber = which attack user selected
+- (int)monsterAttack:(int)attackNumber{ // attackNumber = which attack user selected
     
-    if (attackNumber == 1) { // based on attack selected, we return this amount of damage
+    int probability = arc4random_uniform(4)+1;
+    
+    if (attackNumber == 1) {
         
         return self.attack1.attackDamage;
         
-    }else if (attackNumber == 2) {
-        
-        if (self.monsterInt == 3) {
-        
-            return self.attack2.attackDamage*2; // Hypno does twice as much damage
-            
-        }else{
+    }else if ((attackNumber == 2) && (probability != 1)) {
         
         return self.attack2.attackDamage;
         
-        }
-        
-    }else if (attackNumber == 3) {
+    }else if ((attackNumber == 3) && (probability != 1)) {
         
         return self.attack3.attackDamage;
         
-    }else{
+    }else if ((attackNumber == 4) && ((probability ==3) || (probability == 4))) {
         
         return self.attack4.attackDamage;
+        
+    }else{
+        
+        return 0;
         
     }
     
 }
 
-- (int) monsterWasAttacked:(int)damageTaken {
+- (int)adjustDamage:(int)damageAmount monsterThatAttacked:(Monsters *)monster {
     
-    if (self.monsterInt == 2) { //Clops takes 50% less damage
+    int actualDamageReceived = damageAmount;
+    
+    if (damageAmount != 0){
         
-        damageTaken *= 0.5;
-        
-    }else if (self.monsterInt == 3) { //Hpyno takes 50% more damage
-        
-        damageTaken *= 1.5;
+        if (monster.monsterInt == self.monsterInt) {
+            
+            actualDamageReceived = actualDamageReceived/2;
+            
+        }else if ([monster.element  isEqual: @"🔥"] && [self.element  isEqual: @"❄️"]) {
+            
+            actualDamageReceived = (5 + actualDamageReceived);
+            
+        }else if ([monster.element  isEqual: @"❄️"] && [self.element  isEqual: @"💧"]){
+            actualDamageReceived = (5 + actualDamageReceived);
+            
+        }else if ([monster.element  isEqual: @"💧"] && [self.element  isEqual: @"🔥"]){
+            actualDamageReceived = (5 + actualDamageReceived);
+            
+        }
         
     }
     
-    self.health -= damageTaken;
+    [self removeDamageFromHealth: actualDamageReceived];
     
-    return damageTaken;
+    return actualDamageReceived;
     
 }
+
+- (void) removeDamageFromHealth: (int) damage {
+    
+    self.health -= damage;
+    
+}
+
+- (int)replacementMonsterHealthAdjustment:(int)currentHealth originalMonsterHealth:(Monsters *)monster {
+    
+    int damageTakenSoFar = 0;
+    
+    if ([self.element isEqual: @"❄️"]) {
+        
+        damageTakenSoFar = 110 - currentHealth;
+        
+    } else {
+        
+        damageTakenSoFar = 100 - currentHealth;
+    }
+    
+    return damageTakenSoFar + 10;
+}
+
 //returns need to end in else, so it's always guaranteed to return something
+
+//self is actual object that called this method. left side of equation. In the view controller, self.user calls "adjust damage". The view controller passes in self.opp as the monster requirement for adjust damage. whatever object calls the method inside of its class, is called "Self". The opponent is attacked in the view controller by the user. The view controller has to use one of its monsters to call adjust damage.
+
 @end

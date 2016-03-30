@@ -15,6 +15,8 @@
 
 @property NSString* name;
 
+@property NSString* element;
+
 @property int health;
 
 @property id monsterImage;
@@ -28,6 +30,8 @@
 
 - (int) monsterAttack: (int) attackNumber; //This monster attacks another monster
 
-- (int) monsterWasAttacked: (int) damageTaken; //This monster was attacked by another monster
+- (int) adjustDamage: (int) damageAmount monsterThatAttacked: (Monsters*) monster;
+
+- (int) replacementMonsterHealthAdjustment: (int) currentHealth originalMonsterHealth: (Monsters*) monster;
 
 @end
