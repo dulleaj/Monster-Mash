@@ -59,6 +59,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *backToFightButton;
 
+@property (weak, nonatomic) IBOutlet UIImageView *fightBackground;
 
 @end
 
@@ -96,6 +97,7 @@
     self.doubleTapButton.hidden = YES;
     self.crushButton.hidden = YES;
     self.backToFightButton.hidden = YES;
+    self.fightBackground.hidden = YES;
     
     [self viewCashAmount];
 
@@ -141,6 +143,7 @@
     self.userElement.hidden = NO;
     self.replaceMonsterButton.hidden = NO;
     self.cashButton.hidden = NO;
+    self.fightBackground.hidden = NO;
 
     
 }
@@ -256,17 +259,7 @@
         
     } else if (self.opp.health <= 0){
         
-        self.cash += 10;
-        
-        [self setCashAmount];
-        
-        self.oppHealth.hidden = YES;
-        
-        self.view.backgroundColor = [UIColor greenColor];
-        
-        self.restartButton.hidden = NO;
-        
-        [self.restartButton setTitle:[NSString stringWithFormat:@"You defeated %@!", self.opp.name] forState:UIControlStateNormal];
+        [self oppLoses];
         
     }
     
@@ -289,8 +282,8 @@
         
     }else{
         
-    [self.retaliateButton setTitle:[NSString stringWithFormat:@"%@ attacked you, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
-    
+        [self.retaliateButton setTitle:[NSString stringWithFormat:@"%@ attacked you, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
+        
     }
     
     self.retaliateButton.hidden = NO;
@@ -342,6 +335,7 @@
     [self viewItemsStock];
     
     self.restartButton.hidden = YES;
+    self.oppHealth.hidden = NO;
     
     if (self.view.backgroundColor == [UIColor greenColor]) {
         
@@ -443,7 +437,8 @@
     self.healthPacksButton.hidden = YES;
     self.doubleTapButton.hidden = YES;
     self.crushButton.hidden = YES;
-    
+    self.fightBackground.hidden = YES;
+
     [self viewCashAmount];
     
     self.availableCashLabel.hidden = NO;
@@ -478,7 +473,8 @@
     self.storeItem5.hidden = YES;
     self.backToFightButton.hidden = YES;
     self.availableCashLabel.hidden = YES;
-    
+    self.fightBackground.hidden = NO;
+
     [self shouldHealthPacksBeVisible];
     [self shouldDoubleTapButtonBeVisible];
     [self shouldCrushButtonBeVisible];
@@ -500,7 +496,7 @@
         
         [self viewCashAmount];
         
-        self.healthPacksTitle = [NSString stringWithFormat:@"✚Packs: %d",self.healthPacks];
+        self.healthPacksTitle = [NSString stringWithFormat:@"✚: %d",self.healthPacks];
         
         [self.healthPacksButton setTitle: self.healthPacksTitle forState: UIControlStateNormal];
     
@@ -517,7 +513,7 @@
     
     self.user.health += 15;
     
-    self.healthPacksTitle = [NSString stringWithFormat:@"✚Packs: %d",self.healthPacks];
+    self.healthPacksTitle = [NSString stringWithFormat:@"✚: %d",self.healthPacks];
     
     [self shouldHealthPacksBeVisible];
     
@@ -585,6 +581,12 @@
 
     [self updateItemsStock];
     
+    if (self.opp.health <= 0){
+        
+        [self oppLoses];
+        
+    }
+    
 }
 
 // SHOULD THE DOUBLE TAP BUTTON BE VISIBLE
@@ -619,7 +621,7 @@
         
         [self viewCashAmount];
         
-        self.healthPacksTitle = [NSString stringWithFormat:@"✚Packs: %d",self.healthPacks];
+        self.healthPacksTitle = [NSString stringWithFormat:@"✚: %d",self.healthPacks];
         
         [self.healthPacksButton setTitle: self.healthPacksTitle forState: UIControlStateNormal];
         
@@ -668,6 +670,12 @@
     self.oppHealth.text = [NSString stringWithFormat:@"%d", self.opp.health];
     
     [self updateItemsStock];
+    
+    if (self.opp.health <= 0){
+        
+        [self oppLoses];
+        
+    }
     
 }
 
@@ -756,7 +764,7 @@
     
     self.defaults = [NSUserDefaults standardUserDefaults];
     self.healthPacks = (int)[self.defaults integerForKey:@"Health Packs"];
-    self.healthPacksTitle = [NSString stringWithFormat:@"✚ Packs: %d",self.healthPacks];
+    self.healthPacksTitle = [NSString stringWithFormat:@"✚ : %d",self.healthPacks];
     
     self.doubleTaps = (int)[self.defaults integerForKey:@"Double Taps"];
     self.doubleTapsTitle = [NSString stringWithFormat:@"2Taps: %d",self.doubleTaps];
@@ -772,8 +780,25 @@
     
 }
 
+// Opp Loses
+- (void)oppLoses {
+        
+        self.cash += 10;
+        
+        [self setCashAmount];
+        
+        self.oppHealth.hidden = YES;
+        
+        self.view.backgroundColor = [UIColor greenColor];
+        
+        self.restartButton.hidden = NO;
+        
+        [self.restartButton setTitle:[NSString stringWithFormat:@"You defeated %@!", self.opp.name] forState:UIControlStateNormal];
+    
+}
 
-// need to save bonus items when they are bought and when they are used. Make a method that saves all three ints, put it where each is bought and each is used.
+
+// need to have simplified method for hidding all of the buttons when restart button is up
 
 // needs a streak button. If streak gets higher than 10, add 50 to opponents health. If it gets higher to 20, add 100 to opponents health.
 
