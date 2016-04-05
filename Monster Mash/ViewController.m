@@ -72,32 +72,24 @@
     self.startButton.hidden = NO;
     self.oppPic.hidden = YES;
     self.oppName.hidden = YES;
-    self.oppHealth.hidden = YES;
     self.userPic.hidden = YES;
     self.userName.hidden = YES;
-    self.userHealth.hidden = YES;
-    self.attack1.hidden = YES;
-    self.attack2.hidden = YES;
-    self.attack3.hidden = YES;
-    self.attack4.hidden = YES;
     self.continueButton.hidden = YES;
     self.retaliateButton.hidden = YES;
     self.restartButton.hidden = YES;
     self.oppElement.hidden = YES;
     self.userElement.hidden = YES;
-    self.replaceMonsterButton.hidden = YES;
-    self.cashButton.hidden = YES;
     self.storeItem1.hidden = YES;
     self.storeItem2.hidden = YES;
     self.storeItem3.hidden = YES;
     self.storeItem4.hidden = YES;
     self.storeItem5.hidden = YES;
     self.availableCashLabel.hidden = YES;
-    self.healthPacksButton.hidden = YES;
-    self.doubleTapButton.hidden = YES;
-    self.crushButton.hidden = YES;
     self.backToFightButton.hidden = YES;
     self.fightBackground.hidden = YES;
+    self.oppHealth.hidden = YES;
+    self.userHealth.hidden = YES;
+    [self hideUserButtons];
     
     [self viewCashAmount];
 
@@ -128,22 +120,15 @@
     self.startButton.hidden = YES;
     self.oppPic.hidden = NO;
     self.oppName.hidden = NO;
-    self.oppHealth.hidden = NO;
     self.userPic.hidden = NO;
     self.userName.hidden = NO;
-    self.userHealth.hidden = NO;
-    self.attack1.hidden = NO;
-    self.attack2.hidden = NO;
-    self.attack3.hidden = NO;
-    self.attack4.hidden = NO;
     self.continueButton.hidden = YES;
     self.retaliateButton.hidden = YES;
     self.restartButton.hidden = YES;
     self.oppElement.hidden = NO;
     self.userElement.hidden = NO;
-    self.replaceMonsterButton.hidden = NO;
-    self.cashButton.hidden = NO;
     self.fightBackground.hidden = NO;
+    [self unhideUserButtons];
 
     
 }
@@ -233,15 +218,13 @@
         
     }
     
-    self.attack1.hidden = YES;
-    self.attack2.hidden = YES;
-    self.attack3.hidden = YES;
-    self.attack4.hidden = YES;
-    self.replaceMonsterButton.hidden = YES;
-    self.cashButton.hidden = YES;
-    self.healthPacksButton.hidden = YES;
-    self.doubleTapButton.hidden = YES;
-    self.crushButton.hidden = YES;
+    if (self.opp.health <= 0) {
+        
+        self.oppHealth.hidden = YES;
+        
+    }
+    
+    [self hideUserButtons];
     
     self.continueButton.hidden = NO;
     
@@ -252,6 +235,7 @@
 - (IBAction)afterContinueButtonWasPressed:(id)sender {
     
     self.continueButton.hidden = YES;
+    [self.continueButton setTitle:nil forState: UIControlStateNormal];
     
     if (self.opp.health > 0) {
         
@@ -286,6 +270,12 @@
         
     }
     
+    if (self.user.health <= 0) {
+        
+        self.userHealth.hidden = YES;
+        
+    }
+    
     self.retaliateButton.hidden = NO;
     
 }
@@ -294,29 +284,16 @@
 - (IBAction)afterRetaliateButtonWasPressed:(id)sender {
     
     self.retaliateButton.hidden = YES;
+    [self.retaliateButton setTitle: nil forState: UIControlStateNormal];
     
     if (self.user.health > 0) {
         
-        self.attack1.hidden = NO;
-        self.attack2.hidden = NO;
-        self.attack3.hidden = NO;
-        self.attack4.hidden = NO;
-        self.replaceMonsterButton.hidden = NO;
-        self.cashButton.hidden = NO;
-        
-        [self shouldHealthPacksBeVisible];
-        [self shouldDoubleTapButtonBeVisible];
-        [self shouldCrushButtonBeVisible];
+        [self unhideUserButtons];
         
     } else if (self.user.health <= 0) {
         
-        self.attack1.hidden = YES;
-        self.attack2.hidden = YES;
-        self.attack3.hidden = YES;
-        self.attack4.hidden = YES;
-        self.replaceMonsterButton.hidden = YES;
-        self.cashButton.hidden = YES;
-        
+        [self hideUserButtons];
+        self.oppHealth.hidden = YES;
         self.userHealth.hidden = YES;
         
         self.view.backgroundColor = [UIColor redColor];
@@ -335,6 +312,8 @@
     [self viewItemsStock];
     
     self.restartButton.hidden = YES;
+    [self.restartButton setTitle: nil forState: UIControlStateNormal];
+    
     self.oppHealth.hidden = NO;
     
     if (self.view.backgroundColor == [UIColor greenColor]) {
@@ -347,12 +326,7 @@
         
         self.view.backgroundColor = [UIColor whiteColor];
         
-        self.attack1.hidden = NO;
-        self.attack2.hidden = NO;
-        self.attack3.hidden = NO;
-        self.attack4.hidden = NO;
-        self.replaceMonsterButton.hidden = NO;
-        self.cashButton.hidden = NO;
+        [self unhideUserButtons];
         
     } else if (self.view.backgroundColor == [UIColor redColor]) {
         
@@ -360,16 +334,9 @@
         
         [self generateUserMonster];
         
-        self.userHealth.hidden = NO;
-        
         self.view.backgroundColor = [UIColor whiteColor];
         
-        self.attack1.hidden = NO;
-        self.attack2.hidden = NO;
-        self.attack3.hidden = NO;
-        self.attack4.hidden = NO;
-        self.replaceMonsterButton.hidden = NO;
-        self.cashButton.hidden = NO;
+        [self unhideUserButtons];
         
     }
     
@@ -388,16 +355,9 @@
         
     if (self.user.health <= 0) {
         
-        self.attack1.hidden = YES;
-        self.attack2.hidden = YES;
-        self.attack3.hidden = YES;
-        self.attack4.hidden = YES;
-        self.replaceMonsterButton.hidden = NO;
-        self.cashButton.hidden = NO;
+        [self hideUserButtons];
         
         self.view.backgroundColor = [UIColor redColor];
-        
-        self.userHealth.hidden = YES;
         
         self.restartButton.hidden = NO;
         
@@ -413,34 +373,25 @@
     self.startButton.hidden = YES;
     self.oppPic.hidden = YES;
     self.oppName.hidden = YES;
-    self.oppHealth.hidden = YES;
     self.userPic.hidden = YES;
     self.userName.hidden = YES;
-    self.userHealth.hidden = YES;
-    self.attack1.hidden = YES;
-    self.attack2.hidden = YES;
-    self.attack3.hidden = YES;
-    self.attack4.hidden = YES;
     self.continueButton.hidden = YES;
     self.retaliateButton.hidden = YES;
     self.restartButton.hidden = YES;
     self.oppElement.hidden = YES;
     self.userElement.hidden = YES;
-    self.replaceMonsterButton.hidden = YES;
-    self.cashButton.hidden = YES;
     self.storeItem1.hidden = NO;
     self.storeItem2.hidden = NO;
     self.storeItem3.hidden = NO;
     self.storeItem4.hidden = NO;
     self.storeItem5.hidden = NO;
     self.backToFightButton.hidden = NO;
-    self.healthPacksButton.hidden = YES;
-    self.doubleTapButton.hidden = YES;
-    self.crushButton.hidden = YES;
     self.fightBackground.hidden = YES;
-
-    [self viewCashAmount];
+    self.oppHealth.hidden = YES;
+    self.userHealth.hidden = YES;
+    [self hideUserButtons];
     
+    [self viewCashAmount];
     self.availableCashLabel.hidden = NO;
     
 }
@@ -451,21 +402,13 @@
     self.startButton.hidden = YES;
     self.oppPic.hidden = NO;
     self.oppName.hidden = NO;
-    self.oppHealth.hidden = NO;
     self.userPic.hidden = NO;
     self.userName.hidden = NO;
-    self.userHealth.hidden = NO;
-    self.attack1.hidden = NO;
-    self.attack2.hidden = NO;
-    self.attack3.hidden = NO;
-    self.attack4.hidden = NO;
     self.continueButton.hidden = YES;
     self.retaliateButton.hidden = YES;
     self.restartButton.hidden = YES;
     self.oppElement.hidden = NO;
     self.userElement.hidden = NO;
-    self.replaceMonsterButton.hidden = NO;
-    self.cashButton.hidden = NO;
     self.storeItem1.hidden = YES;
     self.storeItem2.hidden = YES;
     self.storeItem3.hidden = YES;
@@ -474,10 +417,8 @@
     self.backToFightButton.hidden = YES;
     self.availableCashLabel.hidden = YES;
     self.fightBackground.hidden = NO;
-
-    [self shouldHealthPacksBeVisible];
-    [self shouldDoubleTapButtonBeVisible];
-    [self shouldCrushButtonBeVisible];
+    [self unhideUserButtons];
+    
 
 }
 
@@ -788,6 +729,8 @@
         [self setCashAmount];
         
         self.oppHealth.hidden = YES;
+    
+        [self hideUserButtons];
         
         self.view.backgroundColor = [UIColor greenColor];
         
@@ -797,8 +740,40 @@
     
 }
 
+- (void)hideUserButtons {
+    
+    self.crushButton.hidden = YES;
+    self.doubleTapButton.hidden = YES;
+    self.cashButton.hidden = YES;
+    self.healthPacksButton.hidden = YES;
+    self.attack1.hidden = YES;
+    self.attack2.hidden = YES;
+    self.attack3.hidden = YES;
+    self.attack4.hidden = YES;
+    self.replaceMonsterButton.hidden = YES;
+    
+}
 
-// need to have simplified method for hidding all of the buttons when restart button is up
+- (void)unhideUserButtons {
+    
+    self.oppHealth.hidden = NO;
+    self.userHealth.hidden = NO;
+    self.cashButton.hidden = NO;
+    self.attack1.hidden = NO;
+    self.attack2.hidden = NO;
+    self.attack3.hidden = NO;
+    self.attack4.hidden = NO;
+    self.replaceMonsterButton.hidden = NO;
+    [self shouldCrushButtonBeVisible];
+    [self shouldHealthPacksBeVisible];
+    [self shouldDoubleTapButtonBeVisible];
+    
+}
+
+
+// need to add movement
+
+// need to add pricing and short explanation of each item in item store
 
 // needs a streak button. If streak gets higher than 10, add 50 to opponents health. If it gets higher to 20, add 100 to opponents health.
 
