@@ -237,36 +237,24 @@
 
 // ATTACK BUTTON 1
 - (IBAction)attack1ButtonPressed:(id)sender {
-    
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:1];
     
 }
 
 // ATTACK BUTTON 2
 - (IBAction)attack2ButtonPressed:(id)sender {
-    
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:2];
     
 }
 
 // ATTACK BUTTON 3
 - (IBAction)attack3ButtonPressed:(id)sender {
-    
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:3];
 
 }
 
 // ATTACK BUTTON 4
 - (IBAction)attack4ButtonPressed:(id)sender {
-    
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:4];
     
 }
@@ -293,6 +281,10 @@
     }else{
         
         [self.continueButton setTitle:[NSString stringWithFormat:@"You attacked %@, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
+        
+        //if we do damage, make the opponent flinch
+        [self oppFlinches];
+
     }
     
     if (self.opp.health <= 0) {
@@ -309,6 +301,7 @@
 //http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
 - (void)oppFlinches {
     
+    //the images of the monster should be in the custom class monster. For example, self.opp.image1
     self.oppFlinchesImages = @[[UIImage imageNamed:[NSString stringWithFormat:@"%d",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF1",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF2",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF3",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF4",self.opp.monsterInt]]];
 
     
@@ -330,16 +323,21 @@
 
     self.oppPic.image = self.oppFlinchesImages[nextIndex];
     
+    //once we have moved the image 4 times, then we invaldite the timer. Doing it before will stop the process of moving the images
+    if (self.currentImageCount == 4){
+        [self invalidateOppFlinch];
+
+    }
+    
 }
 
 - (void)invalidateOppFlinch {
-
-    if (self.currentImageCount >= 4){
-        
+    
         [self.flinchTime invalidate];
+    //your logic is all based on the currentImageCount, so reset it when the timer is canceled
+        self.currentImageCount = 0;
         self.flinchTime = nil;
         self.oppPic.image = self.oppFlinchesImages[0];
-    }
 
 }
 
