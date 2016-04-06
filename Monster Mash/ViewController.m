@@ -37,10 +37,20 @@
 @property (weak, nonatomic) IBOutlet UIButton *replaceMonsterButton;
 @property (weak, nonatomic) IBOutlet UIButton *cashButton;
 @property (weak, nonatomic) IBOutlet UIButton *storeItem1;
+@property (weak, nonatomic) IBOutlet UILabel *storeItem1Label;
+
 @property (weak, nonatomic) IBOutlet UIButton *storeItem2;
+@property (weak, nonatomic) IBOutlet UILabel *storeItem2Label;
+
 @property (weak, nonatomic) IBOutlet UIButton *storeItem3;
+@property (weak, nonatomic) IBOutlet UILabel *storeItem3Label;
+
 @property (weak, nonatomic) IBOutlet UIButton *storeItem4;
+@property (weak, nonatomic) IBOutlet UILabel *storeItem4Label;
+
 @property (weak, nonatomic) IBOutlet UIButton *storeItem5;
+@property (weak, nonatomic) IBOutlet UILabel *storeItem5Label;
+
 @property (weak, nonatomic) IBOutlet UILabel *availableCashLabel;
 
 @property int healthPacks;
@@ -61,6 +71,12 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *fightBackground;
 
+@property NSArray* TurnAroundImages;
+@property NSTimer* UserTurnsAround;
+
+@property NSArray* oppFlinchesImages;
+@property NSTimer* flinchTime;
+@property int currentImageCount;
 @end
 
 @implementation ViewController
@@ -84,9 +100,14 @@
     self.storeItem3.hidden = YES;
     self.storeItem4.hidden = YES;
     self.storeItem5.hidden = YES;
+    self.storeItem1Label.hidden = YES;
+    self.storeItem2Label.hidden = YES;
+    self.storeItem3Label.hidden = YES;
+    self.storeItem4Label.hidden = YES;
+    self.storeItem5Label.hidden = YES;
     self.availableCashLabel.hidden = YES;
     self.backToFightButton.hidden = YES;
-    self.fightBackground.hidden = YES;
+    self.fightBackground.alpha = 0.3;
     self.oppHealth.hidden = YES;
     self.userHealth.hidden = YES;
     [self hideUserButtons];
@@ -98,6 +119,12 @@
     [self.storeItem3 setTitle:@"+1 Health Case" forState: UIControlStateNormal];
     [self.storeItem4 setTitle:@"+1 Crush Button" forState: UIControlStateNormal];
     [self.storeItem5 setTitle:@"Juggernaut" forState: UIControlStateNormal];
+ 
+    self.storeItem1Label.text = [NSString stringWithFormat:@"$50 - Adds 15 pts to user heatlh."];
+    self.storeItem2Label.text = [NSString stringWithFormat:@"$50 - Removes 15 pts from opponents heatlh."];
+    self.storeItem3Label.text = [NSString stringWithFormat:@"$125 - 3 Health Packs."];
+    self.storeItem4Label.text = [NSString stringWithFormat:@"$150 - Removes 75 pts from opponents heatlh."];
+    self.storeItem5Label.text = [NSString stringWithFormat:@"$500 - Adds 50 pts to health and 10 pts to each attack."];
     
 }
 
@@ -117,6 +144,8 @@
     
     [self generateUserMonster];
     
+    self.flinchTime = [[NSTimer alloc] init]; //new
+    
     self.startButton.hidden = YES;
     self.oppPic.hidden = NO;
     self.oppName.hidden = NO;
@@ -127,7 +156,7 @@
     self.restartButton.hidden = YES;
     self.oppElement.hidden = NO;
     self.userElement.hidden = NO;
-    self.fightBackground.hidden = NO;
+    self.fightBackground.alpha = 1;
     [self unhideUserButtons];
 
     
@@ -145,14 +174,52 @@
     }
     
     self.userHealth.text = [NSString stringWithFormat:@"%d",self.user.health];
-    self.userPic.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d",self.user.monsterInt]];
     self.userElement.text = self.user.element;
+    
+    //self.userPic.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d",self.user.monsterInt]];
+    
+    self.UserTurnsAround = [[NSTimer alloc] init];
+    
+    //http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
+    self.TurnAroundImages = @[[UIImage imageNamed:[NSString stringWithFormat:@"%d",self.user.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dback",self.user.monsterInt]]];
+    self.userPic.image = self.TurnAroundImages[0];
+    
+    [self userImageDidAppear:YES];
 
     [self.attack1 setTitle: self.user.attack1.attackName forState:UIControlStateNormal];
     [self.attack2 setTitle: self.user.attack2.attackName forState:UIControlStateNormal];
     [self.attack3 setTitle: self.user.attack3.attackName forState:UIControlStateNormal];
     [self.attack4 setTitle: self.user.attack4.attackName forState:UIControlStateNormal];
     
+    
+}
+
+//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
+- (void)userImageDidAppear:(BOOL)animated {
+    
+    self.UserTurnsAround = [NSTimer scheduledTimerWithTimeInterval:1
+    target:self
+    selector:@selector(changeImage)
+    userInfo:nil
+    repeats:NO];
+    
+}
+
+//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
+- (void)changeImage {
+    
+    NSInteger seconds =+ 1;
+    
+    NSInteger currentIndex = [self.TurnAroundImages indexOfObject:self.userPic.image];
+    NSInteger nextIndex    = (currentIndex + 1) % self.TurnAroundImages.count;
+    
+    self.userPic.image = self.TurnAroundImages[nextIndex];
+
+    if (seconds == 3){
+        
+        [self.UserTurnsAround invalidate];
+        
+    }
     
 }
 
@@ -171,6 +238,8 @@
 // ATTACK BUTTON 1
 - (IBAction)attack1ButtonPressed:(id)sender {
     
+    [self oppFlinches];
+    [self invalidateOppFlinch];
     [self userAttack:1];
     
 }
@@ -178,17 +247,26 @@
 // ATTACK BUTTON 2
 - (IBAction)attack2ButtonPressed:(id)sender {
     
+    [self oppFlinches];
+    [self invalidateOppFlinch];
     [self userAttack:2];
+    
 }
 
 // ATTACK BUTTON 3
 - (IBAction)attack3ButtonPressed:(id)sender {
     
+    [self oppFlinches];
+    [self invalidateOppFlinch];
     [self userAttack:3];
+
 }
 
 // ATTACK BUTTON 4
 - (IBAction)attack4ButtonPressed:(id)sender {
+    
+    [self oppFlinches];
+    [self invalidateOppFlinch];
     [self userAttack:4];
     
 }
@@ -215,19 +293,54 @@
     }else{
         
         [self.continueButton setTitle:[NSString stringWithFormat:@"You attacked %@, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
-        
     }
     
     if (self.opp.health <= 0) {
         
         self.oppHealth.hidden = YES;
-        
     }
     
     [self hideUserButtons];
     
     self.continueButton.hidden = NO;
     
+}
+
+//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
+- (void)oppFlinches {
+    
+    self.oppFlinchesImages = @[[UIImage imageNamed:[NSString stringWithFormat:@"%d",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF1",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF2",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF3",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF4",self.opp.monsterInt]]];
+
+    
+    self.flinchTime = [NSTimer scheduledTimerWithTimeInterval:.05
+                            target:self
+                            selector:@selector(changeOppFlinchImage)
+                            userInfo:nil
+                            repeats:YES];
+    
+}
+
+//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
+- (void)changeOppFlinchImage {
+    
+    self.currentImageCount += 1;
+        
+    NSInteger currentIndex = [self.oppFlinchesImages indexOfObject:self.oppPic.image];
+    NSInteger nextIndex    = (currentIndex + 1) % self.oppFlinchesImages.count;
+
+    self.oppPic.image = self.oppFlinchesImages[nextIndex];
+    
+}
+
+- (void)invalidateOppFlinch {
+
+    if (self.currentImageCount >= 4){
+        
+        [self.flinchTime invalidate];
+        self.flinchTime = nil;
+        self.oppPic.image = self.oppFlinchesImages[0];
+    }
+
 }
 
 
@@ -385,8 +498,13 @@
     self.storeItem3.hidden = NO;
     self.storeItem4.hidden = NO;
     self.storeItem5.hidden = NO;
+    self.storeItem1Label.hidden = NO;
+    self.storeItem2Label.hidden = NO;
+    self.storeItem3Label.hidden = NO;
+    self.storeItem4Label.hidden = NO;
+    self.storeItem5Label.hidden = NO;
     self.backToFightButton.hidden = NO;
-    self.fightBackground.hidden = YES;
+    self.fightBackground.alpha = 0.3;
     self.oppHealth.hidden = YES;
     self.userHealth.hidden = YES;
     [self hideUserButtons];
@@ -414,9 +532,14 @@
     self.storeItem3.hidden = YES;
     self.storeItem4.hidden = YES;
     self.storeItem5.hidden = YES;
+    self.storeItem1Label.hidden = YES;
+    self.storeItem2Label.hidden = YES;
+    self.storeItem3Label.hidden = YES;
+    self.storeItem4Label.hidden = YES;
+    self.storeItem5Label.hidden = YES;
     self.backToFightButton.hidden = YES;
     self.availableCashLabel.hidden = YES;
-    self.fightBackground.hidden = NO;
+    self.fightBackground.alpha = 1;
     [self unhideUserButtons];
     
 
@@ -771,9 +894,8 @@
 }
 
 
-// need to add movement
 
-// need to add pricing and short explanation of each item in item store
+// need to fix snaps teeth
 
 // needs a streak button. If streak gets higher than 10, add 50 to opponents health. If it gets higher to 20, add 100 to opponents health.
 
