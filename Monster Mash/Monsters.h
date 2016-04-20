@@ -26,6 +26,9 @@
 @property Attack* attack3;
 @property Attack* attack4;
 
+@property NSArray* monsterFrontImages;
+@property NSArray* monsterBackImages;
+
 - (void) monsterRoster; //This is how the monster is randomly selected
 
 - (int) monsterAttack: (int) attackNumber; //This monster attacks another monster

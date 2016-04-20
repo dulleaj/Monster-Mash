@@ -26,43 +26,51 @@
     
     if (self.monsterInt == 0) {
         
-        // Fire beats ice, loses to water. Let's add 5 to fire attack.
-        // Ice beats water, loses to fire. Let's add 10 to defense, take 5 off each attack.
-        // Water beats fire, loses to ice. With probability, lets give water better odds for landing.
-        
         self.name = @"Chomp";
         self.health = 110;
         self.element = @"❄️";
+        self.monsterFrontImages = [NSArray arrayWithObjects:@"0",@"0F1",@"0F2",@"0F3",@"0F4", nil];
+        self.monsterBackImages = [NSArray arrayWithObjects:@"0back",@"0B1",@"0B2",@"0B3",@"0B4", nil];
        
     }else if (self.monsterInt == 1) {
         
         self.name = @"Squak";
         self.health = 100;
         self.element = @"🔥";
+        self.monsterFrontImages = [NSArray arrayWithObjects: @"1",@"1F1",@"1F2",@"1F3",@"1F4", nil];
+        self.monsterBackImages = [NSArray arrayWithObjects:@"1back",@"1B1",@"1B2",@"1B3",@"1B4", nil];
         
     }else if (self.monsterInt == 2) {
         
         self.name = @"Clops";
         self.health = 100;
         self.element = @"💧";
+        self.monsterFrontImages = [NSArray arrayWithObjects:@"2",@"2F1",@"2F2",@"2F3",@"2F4", nil];
+        self.monsterBackImages = [NSArray arrayWithObjects:@"2back",@"2B1",@"2B2",@"2B3",@"2B4", nil];
         
     }else if (self.monsterInt == 3) {
         
         self.name = @"Hypno";
         self.health = 110;
         self.element = @"❄️";
+        self.monsterFrontImages = [NSArray arrayWithObjects:@"3",@"3F1",@"3F2",@"3F3",@"3F4", nil];
+        self.monsterBackImages = [NSArray arrayWithObjects:@"3back",@"3B1",@"3B2",@"3B3",@"3B4", nil];
         
     }else if (self.monsterInt == 4) {
         
         self.name = @"Snap";
         self.health = 100;
         self.element = @"💧";
+        self.monsterFrontImages = [NSArray arrayWithObjects:@"4",@"4F1",@"4F2",@"4F3",@"4F4", nil];
+        self.monsterBackImages = [NSArray arrayWithObjects:@"4back",@"4B1",@"4B2",@"4B3",@"4B4", nil];
         
     }else if (self.monsterInt == 5) {
         
         self.name = @"Fright";
         self.health = 100;
         self.element = @"🔥";
+        self.monsterFrontImages = [NSArray arrayWithObjects:@"5",@"5F1",@"5F2",@"5F3",@"5F4", nil];
+        self.monsterBackImages = [NSArray arrayWithObjects:@"5back",@"5B1",@"5B2",@"5B3",@"5B4", nil];
         
     }
     
@@ -95,7 +103,7 @@
     }
     
 }
-
+// int damage = [self.opp adjustDamage: potential  monsterThatAttacked: self.user];
 - (int)adjustDamage:(int)damageAmount monsterThatAttacked:(Monsters *)monster {
     
     int actualDamageReceived = damageAmount;

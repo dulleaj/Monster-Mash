@@ -176,13 +176,10 @@
     self.userHealth.text = [NSString stringWithFormat:@"%d",self.user.health];
     self.userElement.text = self.user.element;
     
-    //self.userPic.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d",self.user.monsterInt]];
-    
     self.UserTurnsAround = [[NSTimer alloc] init];
-    
-    //http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
-    self.TurnAroundImages = @[[UIImage imageNamed:[NSString stringWithFormat:@"%d",self.user.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dback",self.user.monsterInt]]];
-    self.userPic.image = self.TurnAroundImages[0];
+
+    NSString* userPicString = self.user.monsterFrontImages [0];
+    self.userPic.image = [UIImage imageNamed: userPicString];
     
     [self userImageDidAppear:YES];
 
@@ -194,10 +191,10 @@
     
 }
 
-//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
-- (void)userImageDidAppear:(BOOL)animated {
+// TIMER IS CALLED
+- (void)userImageDidAppear:(BOOL)animated{
     
-    self.UserTurnsAround = [NSTimer scheduledTimerWithTimeInterval:1
+    self.UserTurnsAround = [NSTimer scheduledTimerWithTimeInterval:2
     target:self
     selector:@selector(changeImage)
     userInfo:nil
@@ -205,22 +202,14 @@
     
 }
 
-//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
+// TIMER SELECTOR POINTS TO
 - (void)changeImage {
     
-    NSInteger seconds =+ 1;
-    
-    NSInteger currentIndex = [self.TurnAroundImages indexOfObject:self.userPic.image];
-    NSInteger nextIndex    = (currentIndex + 1) % self.TurnAroundImages.count;
-    
-    self.userPic.image = self.TurnAroundImages[nextIndex];
+    NSString* userPicString = self.user.monsterBackImages [0];
+    self.userPic.image = [UIImage imageNamed: userPicString];
 
-    if (seconds == 3){
-        
-        [self.UserTurnsAround invalidate];
-        
-    }
-    
+    [self.UserTurnsAround invalidate];
+
 }
 
 // GENERATING A MONSTER FOR THE COMPUTER
@@ -230,7 +219,7 @@
     [self.opp monsterRoster];
     self.oppName.text = self.opp.name;
     self.oppHealth.text = [NSString stringWithFormat:@"%d",self.opp.health];
-    self.oppPic.image = [UIImage imageNamed: [NSString stringWithFormat:@"%d",self.opp.monsterInt]];
+    self.oppPic.image = [UIImage imageNamed: self.opp.monsterFrontImages[0]];
     self.oppElement.text = self.opp.element;
     
 }
@@ -238,8 +227,6 @@
 // ATTACK BUTTON 1
 - (IBAction)attack1ButtonPressed:(id)sender {
     
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:1];
     
 }
@@ -247,8 +234,6 @@
 // ATTACK BUTTON 2
 - (IBAction)attack2ButtonPressed:(id)sender {
     
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:2];
     
 }
@@ -256,17 +241,13 @@
 // ATTACK BUTTON 3
 - (IBAction)attack3ButtonPressed:(id)sender {
     
-    [self oppFlinches];
-    [self invalidateOppFlinch];
     [self userAttack:3];
 
 }
 
 // ATTACK BUTTON 4
 - (IBAction)attack4ButtonPressed:(id)sender {
-    
-    [self oppFlinches];
-    [self invalidateOppFlinch];
+
     [self userAttack:4];
     
 }
@@ -291,6 +272,8 @@
         [self.continueButton setTitle:[NSString stringWithFormat:@"Your attack missed %@!", self.opp.name] forState:UIControlStateNormal];
         
     }else{
+        
+        [self oppFlinches];
         
         [self.continueButton setTitle:[NSString stringWithFormat:@"You attacked %@, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
     }
@@ -330,19 +313,21 @@
 
     self.oppPic.image = self.oppFlinchesImages[nextIndex];
     
+    if (self.currentImageCount >= 4){
+     
+        [self invalidateOppFlinch];
+         
+    }
 }
 
 - (void)invalidateOppFlinch {
-
-    if (self.currentImageCount >= 4){
         
-        [self.flinchTime invalidate];
-        self.flinchTime = nil;
-        self.oppPic.image = self.oppFlinchesImages[0];
-    }
-
+    [self.flinchTime invalidate];
+    self.currentImageCount = 0;
+    self.flinchTime = nil;
+    self.oppPic.image = self.oppFlinchesImages[0];
+    
 }
-
 
 // AFTER HITTING CONTINUE, THE COMPUTER ATTACKS
 - (IBAction)afterContinueButtonWasPressed:(id)sender {
