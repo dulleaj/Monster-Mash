@@ -71,12 +71,20 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *fightBackground;
 
-@property NSArray* TurnAroundImages;
-@property NSTimer* UserTurnsAround;
+@property NSTimer* userTurnsAround;
 
-@property NSArray* oppFlinchesImages;
-@property NSTimer* flinchTime;
+@property NSTimer* oppFlinchTime;
+@property NSTimer* userFlinchTime;
 @property int currentImageCount;
+
+@property int winCount;
+@property int lossCount;
+@property int currentLevel;
+@property (weak, nonatomic) IBOutlet UILabel *currentLevelLabel;
+
+
+
+
 @end
 
 @implementation ViewController
@@ -84,7 +92,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
+
     self.startButton.hidden = NO;
     self.oppPic.hidden = YES;
     self.oppName.hidden = YES;
@@ -139,12 +147,11 @@
     self.defeatedMonsters = [[NSMutableArray alloc] init];
     
     [self viewItemsStock];
-    
     [self generateOppMonster];
-    
     [self generateUserMonster];
     
-    self.flinchTime = [[NSTimer alloc] init]; //new
+    self.oppFlinchTime = [[NSTimer alloc] init];
+    self.userFlinchTime = [[NSTimer alloc] init];
     
     self.startButton.hidden = YES;
     self.oppPic.hidden = NO;
@@ -158,15 +165,18 @@
     self.userElement.hidden = NO;
     self.fightBackground.alpha = 1;
     [self unhideUserButtons];
-
-    
 }
 
-// GENERATING A MONSTER FOR THE USER
+
+
+
+// YO-GENERATING MONSTERS AND THEIR ANIMATIONS____________________________________________________________
+
+// Generate user monster
 - (void)generateUserMonster {
     
     self.user = [[Monsters alloc] init];
-    [self.user monsterRoster];
+    [self.user monsterRoster:5 and:self.winCount];
     self.userName.text = self.user.name;
     
     if (self.juggernautItemIsOwned == YES) {
@@ -176,7 +186,7 @@
     self.userHealth.text = [NSString stringWithFormat:@"%d",self.user.health];
     self.userElement.text = self.user.element;
     
-    self.UserTurnsAround = [[NSTimer alloc] init];
+    self.userTurnsAround = [[NSTimer alloc] init];
 
     NSString* userPicString = self.user.monsterFrontImages [0];
     self.userPic.image = [UIImage imageNamed: userPicString];
@@ -187,72 +197,135 @@
     [self.attack2 setTitle: self.user.attack2.attackName forState:UIControlStateNormal];
     [self.attack3 setTitle: self.user.attack3.attackName forState:UIControlStateNormal];
     [self.attack4 setTitle: self.user.attack4.attackName forState:UIControlStateNormal];
-    
-    
 }
 
-// TIMER IS CALLED
+
+
+// Turn-around timer is called
 - (void)userImageDidAppear:(BOOL)animated{
     
-    self.UserTurnsAround = [NSTimer scheduledTimerWithTimeInterval:2
+    self.userTurnsAround = [NSTimer scheduledTimerWithTimeInterval:1
     target:self
-    selector:@selector(changeImage)
+    selector:@selector(changeImageForTurn)
     userInfo:nil
     repeats:NO];
-    
 }
 
-// TIMER SELECTOR POINTS TO
-- (void)changeImage {
+// Selector for turn-around timer
+- (void)changeImageForTurn {
     
     NSString* userPicString = self.user.monsterBackImages [0];
     self.userPic.image = [UIImage imageNamed: userPicString];
 
-    [self.UserTurnsAround invalidate];
-
+    [self.userTurnsAround invalidate];
+    self.userTurnsAround = 0;
 }
 
-// GENERATING A MONSTER FOR THE COMPUTER
+// User is hurt, flinch timer is set
+- (void)userMonsterFlinches {
+    
+    self.userFlinchTime = [NSTimer scheduledTimerWithTimeInterval:0.05
+                            target:self
+                            selector:@selector(changeUserMonsterFlinchImage)
+                            userInfo:nil
+                            repeats:YES];
+}
+
+// Selector for flinch timer
+- (void)changeUserMonsterFlinchImage {
+    
+    self.currentImageCount += 1;
+    
+    NSString* userPicString = self.user.monsterBackImages[self.currentImageCount];
+    self.userPic.image = [UIImage imageNamed: userPicString];
+    
+    if (self.currentImageCount >= 4){
+        
+        [self invalidateMonsterFlinch:self.userFlinchTime];
+        userPicString = self.user.monsterBackImages[0];
+        self.userPic.image = [UIImage imageNamed: userPicString];
+    }
+}
+
+
+
+// Generating opp monster
 - (void) generateOppMonster {
     
     self.opp = [[Monsters alloc] init];
-    [self.opp monsterRoster];
+    [self.opp monsterRoster: arc4random_uniform(6) and:self.winCount];
     self.oppName.text = self.opp.name;
     self.oppHealth.text = [NSString stringWithFormat:@"%d",self.opp.health];
     self.oppPic.image = [UIImage imageNamed: self.opp.monsterFrontImages[0]];
     self.oppElement.text = self.opp.element;
-    
 }
 
-// ATTACK BUTTON 1
+// Opp is hurt, timer is set for flinches
+- (void)oppMonsterFlinches {
+    
+    self.oppFlinchTime = [NSTimer scheduledTimerWithTimeInterval: 0.05
+                                                          target:self
+                                                        selector:@selector(changeOppMonsterFlinchImage)
+                                                        userInfo:nil
+                                                         repeats:YES];
+}
+
+// Seclector for flinch timer
+- (void)changeOppMonsterFlinchImage {
+    
+    self.currentImageCount += 1;
+    
+    NSString* oppPicString = self.opp.monsterFrontImages[self.currentImageCount];
+    self.oppPic.image = [UIImage imageNamed: oppPicString];
+    
+    if (self.currentImageCount >= 4){
+        
+        [self invalidateMonsterFlinch:self.oppFlinchTime];
+        oppPicString = self.opp.monsterFrontImages[0];
+        self.oppPic.image = [UIImage imageNamed:oppPicString];
+        
+    }
+}
+
+// Either timer can be invalidated here
+- (void)invalidateMonsterFlinch: (NSTimer*)whichMonster {
+    
+    [whichMonster invalidate];
+    self.currentImageCount = 0;
+    whichMonster = nil;
+}
+
+
+
+// YO-ATTACKS____________________________________________________________
+
+// Attack button 1
 - (IBAction)attack1ButtonPressed:(id)sender {
     
     [self userAttack:1];
-    
 }
 
-// ATTACK BUTTON 2
+// Attack button 2
 - (IBAction)attack2ButtonPressed:(id)sender {
     
     [self userAttack:2];
-    
 }
 
-// ATTACK BUTTON 3
+// Attack button 3
 - (IBAction)attack3ButtonPressed:(id)sender {
     
     [self userAttack:3];
-
 }
 
-// ATTACK BUTTON 4
+// Attack button 4
 - (IBAction)attack4ButtonPressed:(id)sender {
 
     [self userAttack:4];
-    
 }
 
-// METHOD FOR ATTACKING COMPUTER
+
+
+// User attacks opp
 - (void)userAttack:(int)attackNumber{
     
     int potential = [self.user monsterAttack:attackNumber];
@@ -260,7 +333,6 @@
     if (self.juggernautItemIsOwned == YES) {
         
         potential += 10;
-        
     }
     
     int damage = [self.opp adjustDamage: potential  monsterThatAttacked: self.user];
@@ -273,7 +345,7 @@
         
     }else{
         
-        [self oppFlinches];
+        [self oppMonsterFlinches];
         
         [self.continueButton setTitle:[NSString stringWithFormat:@"You attacked %@, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
     }
@@ -281,55 +353,17 @@
     if (self.opp.health <= 0) {
         
         self.oppHealth.hidden = YES;
+    
     }
     
     [self hideUserButtons];
     
     self.continueButton.hidden = NO;
-    
 }
 
-//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
-- (void)oppFlinches {
-    
-    self.oppFlinchesImages = @[[UIImage imageNamed:[NSString stringWithFormat:@"%d",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF1",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF2",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF3",self.opp.monsterInt]],[UIImage imageNamed:[NSString stringWithFormat:@"%dF4",self.opp.monsterInt]]];
 
-    
-    self.flinchTime = [NSTimer scheduledTimerWithTimeInterval:.05
-                            target:self
-                            selector:@selector(changeOppFlinchImage)
-                            userInfo:nil
-                            repeats:YES];
-    
-}
 
-//http://stackoverflow.com/questions/15806492/change-array-of-images-with-nstimer
-- (void)changeOppFlinchImage {
-    
-    self.currentImageCount += 1;
-        
-    NSInteger currentIndex = [self.oppFlinchesImages indexOfObject:self.oppPic.image];
-    NSInteger nextIndex    = (currentIndex + 1) % self.oppFlinchesImages.count;
-
-    self.oppPic.image = self.oppFlinchesImages[nextIndex];
-    
-    if (self.currentImageCount >= 4){
-     
-        [self invalidateOppFlinch];
-         
-    }
-}
-
-- (void)invalidateOppFlinch {
-        
-    [self.flinchTime invalidate];
-    self.currentImageCount = 0;
-    self.flinchTime = nil;
-    self.oppPic.image = self.oppFlinchesImages[0];
-    
-}
-
-// AFTER HITTING CONTINUE, THE COMPUTER ATTACKS
+// After hitting continue, opp attacks if it's still alive
 - (IBAction)afterContinueButtonWasPressed:(id)sender {
     
     self.continueButton.hidden = YES;
@@ -347,7 +381,7 @@
     
 }
 
-// METHOD FOR THE COMPUTER ATTACKING
+// Opp attacks user
 - (void)computerAttacks{
     
     int randomAttackInt = arc4random_uniform(4)+1;
@@ -364,6 +398,7 @@
         
     }else{
         
+        [self userMonsterFlinches];
         [self.retaliateButton setTitle:[NSString stringWithFormat:@"%@ attacked you, doing %d damage.", self.opp.name, damage] forState:UIControlStateNormal];
         
     }
@@ -378,7 +413,7 @@
     
 }
 
-// SETS UP YOUR TURN IF YOU'RE STILL ALIVE
+// Sets up your turn if you're still alive
 - (IBAction)afterRetaliateButtonWasPressed:(id)sender {
     
     self.retaliateButton.hidden = YES;
@@ -390,21 +425,13 @@
         
     } else if (self.user.health <= 0) {
         
-        [self hideUserButtons];
-        self.oppHealth.hidden = YES;
-        self.userHealth.hidden = YES;
-        
-        self.view.backgroundColor = [UIColor redColor];
-        
-        [self.restartButton setTitle:[NSString stringWithFormat:@"You have been defeated by %@!", self.opp.name] forState:UIControlStateNormal];
-        
-        self.restartButton.hidden = NO;
+        [self userLoses];
         
     }
     
 }
 
-// AFTER YOU HIT THE RESTART BUTTON
+// After you hit the restart button
 - (IBAction)afterRestartButtonWasPressed:(id)sender {
     
     [self viewItemsStock];
@@ -417,11 +444,11 @@
     if (self.view.backgroundColor == [UIColor greenColor]) {
         
         self.user.health = 100;
-        
         self.userHealth.text = [NSString stringWithFormat:@"%d",self.user.health];
         
         [self generateOppMonster];
         
+        self.fightBackground.alpha = 1;
         self.view.backgroundColor = [UIColor whiteColor];
         
         [self unhideUserButtons];
@@ -429,15 +456,13 @@
     } else if (self.view.backgroundColor == [UIColor redColor]) {
         
         [self generateOppMonster];
-        
         [self generateUserMonster];
         
+        self.fightBackground.alpha = 1;
         self.view.backgroundColor = [UIColor whiteColor];
         
         [self unhideUserButtons];
-        
     }
-    
 }
 
 // USER REPLACES MONSTER
@@ -451,18 +476,10 @@
     
     self.userHealth.text = [NSString stringWithFormat:@"%d", self.user.health];
         
-    if (self.user.health <= 0) {
+    if (self.user.health <= 0) { // USER LOSES
         
-        [self hideUserButtons];
-        
-        self.view.backgroundColor = [UIColor redColor];
-        
-        self.restartButton.hidden = NO;
-        
-        [self.restartButton setTitle:[NSString stringWithFormat:@"You have been defeated by %@!", self.opp.name] forState:UIControlStateNormal];
-        
+        [self userLoses];
     }
-    
 }
 
 // USER CHECKS ON CASH LEVEL
@@ -605,7 +622,7 @@
         
         [self viewCashAmount];
         
-        self.doubleTapsTitle = [NSString stringWithFormat:@"2Taps: %d",self.doubleTaps];
+        self.doubleTapsTitle = [NSString stringWithFormat:@"⚡︎: %d",self.doubleTaps];
         
         [self.doubleTapButton setTitle: self.doubleTapsTitle forState: UIControlStateNormal];
         
@@ -622,7 +639,7 @@
     
     self.opp.health -= 15;
     
-    self.doubleTapsTitle = [NSString stringWithFormat:@"2Taps: %d",self.doubleTaps];
+    self.doubleTapsTitle = [NSString stringWithFormat:@"⚡︎: %d",self.doubleTaps];
     
     [self shouldDoubleTapButtonBeVisible];
     
@@ -695,7 +712,7 @@
         
         [self viewCashAmount];
         
-        self.crushAttacksTitle = [NSString stringWithFormat:@"Crush: %d",self.crushAttacks];
+        self.crushAttacksTitle = [NSString stringWithFormat:@"☠: %d",self.crushAttacks];
         
         [self.crushButton setTitle: self.crushAttacksTitle forState: UIControlStateNormal];
         
@@ -712,7 +729,7 @@
     
     self.opp.health -= 75;
     
-    self.crushAttacksTitle = [NSString stringWithFormat:@"Crush: %d",self.crushAttacks];
+    self.crushAttacksTitle = [NSString stringWithFormat:@"☠: %d",self.crushAttacks];
     
     [self shouldCrushButtonBeVisible];
     
@@ -773,41 +790,96 @@
 
 
 
-// SET CASH
-- (void)setCashAmount {
+// USER WINS
+- (void)oppLoses {
     
-    self.defaults = [NSUserDefaults standardUserDefaults];
-    [self.defaults setInteger:self.cash forKey:@"HighScore"];
-    [self.defaults synchronize];
+    self.view.backgroundColor = [UIColor greenColor];
+    self.fightBackground.alpha = 0.5;
+    
+    self.cash += 10;
+    self.winCount +=1;
+    
+    // Setting user level
+    if(self.winCount < 20){
+        self.currentLevel = 1;
+        
+    }else if ((self.winCount >= 20) && (self.winCount < 50)){
+        self.currentLevel = 2;
+        
+    }else if ((self.winCount >= 50) && (self.winCount < 80)){
+        self.currentLevel = 3;
+        
+    }else if (self.winCount >= 80){
+        self.currentLevel = 4;
+    }
+    
+    [self setCashAmount];
+    [self viewCashAmount];
+    
+    [self hideUserButtons];
+    self.oppHealth.hidden = YES;
+    
+    [self.restartButton setTitle:[NSString stringWithFormat:@"You defeated %@!", self.opp.name] forState:UIControlStateNormal];
+    self.restartButton.hidden = NO;
     
 }
 
-// LOAD CASH
+// USER LOSES
+- (void)userLoses {
+    
+    self.view.backgroundColor = [UIColor redColor];
+    self.fightBackground.alpha = 0.5;
+    
+    self.cash -= 10;
+    self.lossCount +=1;
+    [self setCashAmount];
+    [self viewCashAmount];
+    
+    [self hideUserButtons];
+    self.userHealth.hidden = YES;
+    
+    [self.restartButton setTitle:[NSString stringWithFormat:@"You defeated %@!", self.opp.name] forState:UIControlStateNormal];
+    self.restartButton.hidden = NO;
+    
+}
+
+// SET CASH, WINS, LOSSES, LEVEL
+- (void)setCashAmount {
+    
+    self.defaults = [NSUserDefaults standardUserDefaults];
+    [self.defaults setInteger:self.cash forKey:@"Money"];
+    [self.defaults setInteger:self.winCount forKey:@"Wins"];
+    [self.defaults setInteger:self.lossCount forKey:@"Losses"];
+    [self.defaults setInteger:self.currentLevel forKey:@"Level"];
+    [self.defaults synchronize];
+    
+}
+// LOAD CASH, WINS, LOSSES, LEVEL
 - (void)viewCashAmount {
     
     self.defaults = [NSUserDefaults standardUserDefaults];
-    self.cash = (int)[self.defaults integerForKey:@"HighScore"];
+    self.cash = (int)[self.defaults integerForKey:@"Money"];
+    self.winCount = (int)[self.defaults integerForKey:@"Wins"];
+    self.lossCount = (int)[self.defaults integerForKey:@"Losses"];
+    self.currentLevel = (int)[self.defaults integerForKey:@"Level"];
+    
     self.availableCashLabel.text = [NSString stringWithFormat:@"Total Cash: $%d",self.cash];
+    self.currentLevelLabel.text = [NSString stringWithFormat:@"User Level: %d",self.currentLevel];
+
     
 }
+
 
 // UPDATE ITEM QUANTITIES
 - (void)updateItemsStock {
     
     self.defaults = [NSUserDefaults standardUserDefaults];
     [self.defaults setInteger:self.healthPacks forKey:@"Health Packs"];
-    [self.defaults synchronize];
-    
-    self.defaults = [NSUserDefaults standardUserDefaults];
     [self.defaults setInteger:self.doubleTaps forKey:@"Double Taps"];
-    [self.defaults synchronize];
-    
-    self.defaults = [NSUserDefaults standardUserDefaults];
     [self.defaults setInteger:self.crushAttacks forKey:@"Crush Attacks"];
     [self.defaults synchronize];
     
 }
-
 // LOAD ITEM QUANTITIES
 - (void)viewItemsStock {
     
@@ -816,35 +888,16 @@
     self.healthPacksTitle = [NSString stringWithFormat:@"✚ : %d",self.healthPacks];
     
     self.doubleTaps = (int)[self.defaults integerForKey:@"Double Taps"];
-    self.doubleTapsTitle = [NSString stringWithFormat:@"2Taps: %d",self.doubleTaps];
+    self.doubleTapsTitle = [NSString stringWithFormat:@"⚡︎: %d",self.doubleTaps];
     
     self.crushAttacks = (int)[self.defaults integerForKey:@"Crush Attacks"];
-    self.crushAttacksTitle = [NSString stringWithFormat:@"Crush: %d",self.crushAttacks];
+    self.crushAttacksTitle = [NSString stringWithFormat:@"☠: %d",self.crushAttacks];
     
     [self.defaults boolForKey:@"Juggernaut"];
     
     [self shouldHealthPacksBeVisible];
     [self shouldDoubleTapButtonBeVisible];
     [self shouldCrushButtonBeVisible];
-    
-}
-
-// Opp Loses
-- (void)oppLoses {
-        
-        self.cash += 10;
-        
-        [self setCashAmount];
-        
-        self.oppHealth.hidden = YES;
-    
-        [self hideUserButtons];
-        
-        self.view.backgroundColor = [UIColor greenColor];
-        
-        self.restartButton.hidden = NO;
-        
-        [self.restartButton setTitle:[NSString stringWithFormat:@"You defeated %@!", self.opp.name] forState:UIControlStateNormal];
     
 }
 
@@ -880,13 +933,28 @@
 
 
 
-// need to fix snaps teeth
+/*
 
-// needs a streak button. If streak gets higher than 10, add 50 to opponents health. If it gets higher to 20, add 100 to opponents health.
+Overview: I want to convert the monster fight app into a digipet type game, where the monster has a home screen and needs to be fed, can have items bought for him, and can gamble money to make more? That could be cool. Could also look into adding features to the user's monster. Also - every two days I should add a new monster, also I should pick a standard monster for the user and give him 3 more upgraded views. Something where he can get bigger.
+ 
+ Tonight:
+ - add to label the win count***
+ - Add wins, losses, levels. Add what happens to user when he reaches certain levels via the Monster Class. Make opp monsters stronger every 10 wins. Make user stronger every level. 
+ - Remove "Change Monster" button, replace with help button.
+ - Change intro/landing.
+ 
+ Future
+ - A streak button, and a way to keep track of the streak. The saved streak should also determine difficulty of the monsters. If streak gets higher than 10, add 50 to opponents health. If it gets higher to 20, add 100 to opponents health and make their attacks stronger.
 
-// add screen that allows user to pick their character.
+ - A page that explains everything
 
-// need a page that explans everything
-
-// make a hide screen method
+ - A home button for the fight screen, and for after the fight is over. If the fight is over and the home button is hit, the user just goes to the home screen. If the fight isn't over, the user loses. 
+ 
+ - Home screen should be sort of be the monster's layer, where you can see what he looks like. On the layer, he should blink and jump around a little. Home layer should show win/loss ratio, lives,
+ 
+ - A win count, loss count, lives count, and level count. 
+ 
+ - need to take away randomly generate monster.
+ 
+ */
 @end

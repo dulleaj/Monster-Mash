@@ -29,7 +29,9 @@
 @property NSArray* monsterFrontImages;
 @property NSArray* monsterBackImages;
 
-- (void) monsterRoster; //This is how the monster is randomly selected
+- (void) monsterRoster: (int)intForMonster and:(int)currentUserWins; //This is how the monster is randomly selected
+
+- (void) determineMonsterHealth: (int)currentUserWinsFromRoster;
 
 - (int) monsterAttack: (int) attackNumber; //This monster attacks another monster
 

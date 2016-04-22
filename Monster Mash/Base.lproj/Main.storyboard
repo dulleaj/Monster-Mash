@@ -478,9 +478,21 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gS-nV-ER1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                <color key="backgroundColor" cyan="0.0" magenta="0.0" yellow="0.0" black="0.0" alpha="0.35447198275862069" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="DyO-bv-eE7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.13360543529999999" green="0.13592366080000001" blue="0.34737580130000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="9gS-nV-ER1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="03J-yL-qgJ"/>
+                            <constraint firstItem="9gS-nV-ER1" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="0KU-Sq-y4V"/>
                             <constraint firstItem="b7n-6h-X8h" firstAttribute="leading" secondItem="5rx-Jt-pJE" secondAttribute="leading" id="1DY-Km-cpk"/>
                             <constraint firstItem="XO7-2t-1VX" firstAttribute="centerY" secondItem="Wlx-7Y-1ap" secondAttribute="centerY" id="1ti-ah-2of"/>
                             <constraint firstItem="gwV-6n-8YV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="21S-b1-5Xi"/>
@@ -510,6 +522,7 @@
                             <constraint firstItem="5rx-Jt-pJE" firstAttribute="top" secondItem="b7n-6h-X8h" secondAttribute="bottom" constant="10" id="M9m-a6-3wZ"/>
                             <constraint firstItem="qUe-nV-wG3" firstAttribute="centerY" secondItem="b7n-6h-X8h" secondAttribute="centerY" id="MNX-g4-Djw"/>
                             <constraint firstItem="EpX-Q5-se8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="150" id="Me9-ZT-hS3"/>
+                            <constraint firstItem="9gS-nV-ER1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NrQ-hn-Pik"/>
                             <constraint firstItem="Ec4-dJ-ma9" firstAttribute="leading" secondItem="A9b-kk-5sW" secondAttribute="trailing" constant="20" id="QIN-3k-GbO"/>
                             <constraint firstItem="ZDp-He-bI0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SLZ-Bv-jf8"/>
                             <constraint firstItem="ckR-j4-o91" firstAttribute="leading" secondItem="0Ad-he-2nY" secondAttribute="trailing" constant="20" id="TGx-RC-qAZ"/>
@@ -584,6 +597,7 @@
                         <outlet property="cashButton" destination="5rx-Jt-pJE" id="inR-Sm-Xph"/>
                         <outlet property="continueButton" destination="gwV-6n-8YV" id="VdS-31-CHj"/>
                         <outlet property="crushButton" destination="qUe-nV-wG3" id="9J3-XW-sRB"/>
+                        <outlet property="currentLevelLabel" destination="9gS-nV-ER1" id="IlH-QK-Mxz"/>
                         <outlet property="doubleTapButton" destination="b7n-6h-X8h" id="Ach-VB-ITM"/>
                         <outlet property="fightBackground" destination="qQI-i6-7tU" id="FaV-mY-FdP"/>
                         <outlet property="healthPacksButton" destination="0Sx-4g-Ekz" id="ZoO-pN-WKK"/>
