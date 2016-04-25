@@ -488,6 +488,9 @@
                                 <color key="textColor" red="0.13360543529999999" green="0.13592366080000001" blue="0.34737580130000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Level Up Pic" translatesAutoresizingMaskIntoConstraints="NO" id="uS3-4O-OHM">
+                                <rect key="frame" x="352" y="119" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -523,6 +526,7 @@
                             <constraint firstItem="qUe-nV-wG3" firstAttribute="centerY" secondItem="b7n-6h-X8h" secondAttribute="centerY" id="MNX-g4-Djw"/>
                             <constraint firstItem="EpX-Q5-se8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="150" id="Me9-ZT-hS3"/>
                             <constraint firstItem="9gS-nV-ER1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NrQ-hn-Pik"/>
+                            <constraint firstItem="uS3-4O-OHM" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PCz-6g-NGN"/>
                             <constraint firstItem="Ec4-dJ-ma9" firstAttribute="leading" secondItem="A9b-kk-5sW" secondAttribute="trailing" constant="20" id="QIN-3k-GbO"/>
                             <constraint firstItem="ZDp-He-bI0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SLZ-Bv-jf8"/>
                             <constraint firstItem="ckR-j4-o91" firstAttribute="leading" secondItem="0Ad-he-2nY" secondAttribute="trailing" constant="20" id="TGx-RC-qAZ"/>
@@ -572,6 +576,7 @@
                             <constraint firstItem="qQI-i6-7tU" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="sCL-XV-sEP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="b7T-kM-48G" secondAttribute="trailing" constant="25" id="tDL-d5-9qX"/>
                             <constraint firstItem="b7T-kM-48G" firstAttribute="leading" secondItem="2ZU-jM-hlP" secondAttribute="trailing" constant="5" id="uNv-oV-VPi"/>
+                            <constraint firstItem="uS3-4O-OHM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uzp-bd-Qva"/>
                             <constraint firstItem="5rx-Jt-pJE" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="v4p-5G-Voj"/>
                             <constraint firstItem="A9b-kk-5sW" firstAttribute="centerX" secondItem="Vuf-mU-omh" secondAttribute="centerX" id="vAd-8d-Zox"/>
                             <constraint firstItem="gwV-6n-8YV" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="vjQ-5G-CaO"/>
@@ -601,6 +606,7 @@
                         <outlet property="doubleTapButton" destination="b7n-6h-X8h" id="Ach-VB-ITM"/>
                         <outlet property="fightBackground" destination="qQI-i6-7tU" id="FaV-mY-FdP"/>
                         <outlet property="healthPacksButton" destination="0Sx-4g-Ekz" id="ZoO-pN-WKK"/>
+                        <outlet property="levelUpPic" destination="uS3-4O-OHM" id="6I5-4D-Kgm"/>
                         <outlet property="oppElement" destination="XBO-8E-634" id="zfz-Kk-yPW"/>
                         <outlet property="oppHealth" destination="e6F-t5-c4T" id="WAf-Qc-AlV"/>
                         <outlet property="oppName" destination="zmI-WP-IgY" id="4zt-py-IQY"/>
@@ -631,6 +637,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Level Up Pic" width="250" height="444"/>
         <image name="monstersBackground" width="250" height="444"/>
     </resources>
 </document>

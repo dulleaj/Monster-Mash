@@ -64,31 +64,30 @@
         self.monsterFrontImages = [NSArray arrayWithObjects:@"4",@"4F1",@"4F2",@"4F3",@"4F4", nil];
         self.monsterBackImages = [NSArray arrayWithObjects:@"4back",@"4B1",@"4B2",@"4B3",@"4B4", nil];
         
-    }else if (self.monsterInt == 5) { // USER MONSTER
+    }else if (self.monsterInt == 5) { // User monster
         
         self.name = @"Fright";
         self.element = @"🔥";
         
         if (currentUserWins < 20){
             self.health = 100;
+            self.monsterFrontImages = [NSArray arrayWithObjects:@"5L1",@"5F1",@"5F2",@"5F3",@"5F4", nil];
+            self.monsterBackImages = [NSArray arrayWithObjects:@"5back",@"5B1",@"5B2",@"5B3",@"5B4", nil];
             
         }else if ((currentUserWins >= 20) && (currentUserWins < 50)){
             self.health = 125;
+            self.monsterFrontImages = [NSArray arrayWithObjects:@"5L2",nil];
+            self.monsterBackImages = [NSArray arrayWithObjects:@"5U1_back",@"5U1_B1",@"5U1_B2",@"5U1_B3",@"5U1_B4", nil];
             
-        }else if ((currentUserWins >= 50) && (currentUserWins < 80)){
+        }else if (currentUserWins >= 50) {
             self.health = 175;
-            
-        }else if (currentUserWins >= 80){
-            self.health = 200;
-            
+            self.monsterFrontImages = [NSArray arrayWithObjects:@"5L3",nil];
+            self.monsterBackImages = [NSArray arrayWithObjects:@"5U2_back",@"5U2_B1",@"5U2_B2",@"5U2_B3",@"5U2_B4", nil];
         }
-        
-        self.monsterFrontImages = [NSArray arrayWithObjects:@"5",@"5F1",@"5F2",@"5F3",@"5F4", nil];
-        self.monsterBackImages = [NSArray arrayWithObjects:@"5back",@"5B1",@"5B2",@"5B3",@"5B4", nil];
     }
 }
 
-- (void) determineMonsterHealth: (int)currentUserWinsFromRoster {
+- (void) determineMonsterHealth: (int)currentUserWinsFromRoster { // Only for opp monsters
     
     if (currentUserWinsFromRoster < 10){
         self.health = 100;
@@ -138,7 +137,7 @@
         return 0;
     }
 }
-// int damage = [self.opp adjustDamage: potential  monsterThatAttacked: self.user];
+
 - (int)adjustDamage:(int)damageAmount monsterThatAttacked:(Monsters *)monster {
     
     int actualDamageReceived = damageAmount;
