@@ -34,7 +34,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *userElement;
 @property int cash;
 @property NSUserDefaults* defaults;
-@property (weak, nonatomic) IBOutlet UIButton *replaceMonsterButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *helpButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *cashButton;
 @property (weak, nonatomic) IBOutlet UIButton *storeItem1;
 @property (weak, nonatomic) IBOutlet UILabel *storeItem1Label;
@@ -68,6 +70,12 @@
 @property BOOL juggernautItemIsOwned;
 
 @property (weak, nonatomic) IBOutlet UIButton *backToFightButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property int nextButtonTally;
+@property (weak, nonatomic) IBOutlet UIButton *previousButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *helpButtonLabel;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *fightBackground;
 
@@ -78,6 +86,8 @@
 @property NSTimer* userLevelsUp;
 @property int currentImageCount;
 @property (weak, nonatomic) IBOutlet UIImageView *levelUpPic;
+@property (weak, nonatomic) IBOutlet UILabel *levelUpLabel;
+
 @property BOOL level2AnimationWasViewed;
 @property BOOL level3AnimationWasViewed;
 
@@ -86,6 +96,7 @@
 @property int currentLevel;
 @property (weak, nonatomic) IBOutlet UILabel *currentLevelLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *homeButton;
 
 
 
@@ -96,20 +107,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
-    self.winCount = 19;
-    self.cash = 5000;
-
-    self.defaults = [NSUserDefaults standardUserDefaults];
-    [self.defaults setBool:NO forKey:@"Animation 2 Viewed"];
-    [self.defaults synchronize];
-
-    [self setCashAmount];
-    [self viewCashAmount];
     
-    //erase code above here in this method
-    
-    self.startButton.hidden = NO;
     self.oppPic.hidden = YES;
     self.oppName.hidden = YES;
     self.userPic.hidden = YES;
@@ -131,14 +129,26 @@
     self.storeItem5Label.hidden = YES;
     self.availableCashLabel.hidden = YES;
     self.backToFightButton.hidden = YES;
-    self.fightBackground.alpha = 0.3;
     self.oppHealth.hidden = YES;
     self.userHealth.hidden = YES;
-    self.levelUpPic.hidden = YES;
+    self.levelUpLabel.hidden = YES;
+    self.helpButton.hidden = YES;
+    self.helpButtonLabel.hidden = YES;
+    self.nextButton.hidden = YES;
+    self.previousButton.hidden = YES;
     [self hideUserButtons];
-    
-    [self viewCashAmount];
 
+    [self viewCashAmount];
+    
+    self.startButton.hidden = NO;
+    
+    NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
+    self.levelUpPic.image = [UIImage imageNamed: userImage];
+    self.levelUpPic.hidden = NO;
+    
+    self.currentLevelLabel.hidden = NO;
+    
+    
     [self.storeItem1 setTitle:@"+1 Health Pack" forState: UIControlStateNormal];
     [self.storeItem2 setTitle:@"+1 Double Tap" forState: UIControlStateNormal];
     [self.storeItem3 setTitle:@"+1 Health Case" forState: UIControlStateNormal];
@@ -170,6 +180,7 @@
     self.oppFlinchTime = [[NSTimer alloc] init];
     self.userFlinchTime = [[NSTimer alloc] init];
     
+    self.currentLevelLabel.hidden = YES;
     self.startButton.hidden = YES;
     self.oppPic.hidden = NO;
     self.oppName.hidden = NO;
@@ -181,13 +192,14 @@
     self.oppElement.hidden = NO;
     self.userElement.hidden = NO;
     self.fightBackground.alpha = 1;
+    self.levelUpPic.hidden = YES;
     [self unhideUserButtons];
 }
 
 
 
 
-// GENERATING MONSTERS AND THEIR ANIMATIONS____________________________________________________________
+// GENERATING MONSTERS AND THEIR ANIMATIONS________________________________________________________________
 
 // GENERATE USER MONSTER
 - (void)generateUserMonster {
@@ -329,12 +341,16 @@
         int oldLevel = self.currentLevel - 1;
         NSString* oldLevelImage = [NSString stringWithFormat:@"5L%d",oldLevel];
         self.levelUpPic.image = [UIImage imageNamed: oldLevelImage];
+        self.levelUpLabel.hidden = YES;
         
     }else{
+        
         self.fightBackground.image = [UIImage imageNamed:@"LevelUp2"];
         
         NSString* newLevelImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
         self.levelUpPic.image = [UIImage imageNamed: newLevelImage];
+        self.levelUpLabel.text = [NSString stringWithFormat:@"MONSTER LEVEL %d",self.currentLevel];
+        self.levelUpLabel.hidden = NO;
     }
     
     self.levelUpPic.hidden = NO;
@@ -343,6 +359,7 @@
         
         [self invalidateTimer:self.userLevelsUp];
         self.levelUpPic.hidden = YES;
+        self.levelUpLabel.hidden = YES;
         self.fightBackground.image = [UIImage imageNamed:@"monstersBackground"];
         
         [self viewItemsStock];
@@ -364,7 +381,7 @@
 
 
 
-// ATTACKS____________________________________________________________
+// ATTACKS_________________________________________________________________________________________________
 
 // ATTACK BUTTON 1
 - (IBAction)attack1ButtonPressed:(id)sender {
@@ -528,70 +545,186 @@
     }
 }
 
-// USER REPLACES MONSTER
-- (IBAction)replacementButtonWasPressed:(id)sender {
+
+
+
+// HELP WITH THE GAME______________________________________________________________________________________
+
+// USER PRESSES HELP BUTTON
+- (IBAction)helpButtonWasPressed:(id)sender {
+    
+    [self hideEverythingOnFightScreen];
+    [self disableUserButtons];
+    self.nextButton.hidden = NO;
+    self.previousButton.hidden = NO;
+    self.backToFightButton.hidden = NO;
+    self.fightBackground.alpha = 0.3;
+    self.helpButtonLabel.text = @"Welcome to MONSTER MASH! You and the computer attack each other in turns, until one Monster's health is depleted.";
+    self.helpButtonLabel.hidden = NO;
+}
+
+// WHEN YOU NEED TO GO BACK A PAGE IN THE HELP SECTIONS
+- (IBAction)previousButtonWasPressed:(id)sender {
+    
+    if (self.nextButtonTally > 0){
+        self.nextButtonTally -= 1;
+        [self helpButtonStages];
+    }
+}
+
+
+// NEXT BUTTON WAS PRESSED FOR MORE INSTRUCTIONS
+- (IBAction)nextButtonWasPressed:(id)sender {
+    
+    self.nextButtonTally += 1;
+    [self helpButtonStages];
+}
+
+
+- (void)helpButtonStages {
+    
+    if (self.nextButtonTally == 0){
         
-    self.user.health = 0;
+        [self hideEverythingOnFightScreen];
 
+        self.helpButtonLabel.text = @"Welcome to MONSTER MASH! You and the computer attack each other in turns, until one Monster's health is depleted.";
+        
+    }else if (self.nextButtonTally == 1) {
+        
+        [self hideEverythingOnFightScreen];
+        self.attack1.hidden = NO;
+        self.attack2.hidden = NO;
+        self.attack3.hidden = NO;
+        self.attack4.hidden = NO;
+        
+        self.helpButtonLabel.text = @"Use your attack buttons to damage your opponent. The first/top attack is your Monster's weakest attack, but will always land.";
+    
+    }else if (self.nextButtonTally == 2) {
+        
+        [self hideEverythingOnFightScreen];
+        self.attack1.hidden = NO;
+        self.attack2.hidden = NO;
+        self.attack3.hidden = NO;
+        self.attack4.hidden = NO;
+        
+        self.helpButtonLabel.text = @"Attack strength increases as you go down the list, but the probability of landing the attack varies inversely.";
+        
+        
+    }else if (self.nextButtonTally == 3) {
+        
+        [self hideEverythingOnFightScreen];
+
+        self.cashButton.hidden = NO;
+        
+        self.doubleTapsTitle = @"⚡︎";
+        self.doubleTapButton.hidden = NO;
+       
+        self.healthPacksTitle = @"✚";
+        self.healthPacksButton.hidden = NO;
+
+        self.crushAttacksTitle = @"☠";
+        self.crushButton.hidden = NO;
+        
+        self.helpButtonLabel.text = @"As you win fights, you'll earn cash - which can be redeemed for perks/items to help you fight your opponents. Click on the green cash button to view the";
+
+    }else if (self.nextButtonTally == 4) {
+        
+        [self hideEverythingOnFightScreen];
+        
+        self.cashButton.hidden = NO;
+        
+        self.doubleTapsTitle = @"⚡︎";
+        self.doubleTapButton.hidden = NO;
+        
+        self.healthPacksTitle = @"✚";
+        self.healthPacksButton.hidden = NO;
+        
+        self.crushAttacksTitle = @"☠";
+        self.crushButton.hidden = NO;
+        
+        self.helpButtonLabel.text = @"store and your current cash levels.Once you have items in stock, they will show up as small buttons above your attack buttons.";
+    
+    }else if (self.nextButtonTally == 5) {
+        
+        [self hideEverythingOnFightScreen];
+        
+        self.oppPic.hidden = NO;
+        self.oppHealth.hidden = NO;
+        self.oppElement.hidden = NO;
+        self.oppName.hidden = NO;
+        
+        self.helpButtonLabel.text = @"Underneath your opponent, you'll notice an element symbol, a number representing the Monster's health, and the Monster's name.";
+    
+    }else if (self.nextButtonTally == 6) {
+        
+        [self hideEverythingOnFightScreen];
+        
+        self.oppPic.hidden = NO;
+        self.oppHealth.hidden = NO;
+        self.oppElement.hidden = NO;
+        self.oppName.hidden = NO;
+        
+        self.helpButtonLabel.text = @"The element symbol represents what type of Monster you're fighting, which affects how your attacks and defense will perform.";
+        
+    }else if (self.nextButtonTally == 7) {
+        
+        [self hideEverythingOnFightScreen];
+        
+        self.oppPic.hidden = NO;
+        self.oppHealth.hidden = NO;
+        self.oppElement.hidden = NO;
+        self.oppName.hidden = NO;
+        
+        self.helpButtonLabel.text = @"Fire Monsters are strong against Ice Monsters, but weak against Water Monsters. Ice monsters are strong against Water Monsters, but";
+    
+    }else if (self.nextButtonTally == 8) {
+        
+        [self hideEverythingOnFightScreen];
+        
+        self.oppPic.hidden = NO;
+        self.oppHealth.hidden = NO;
+        self.oppElement.hidden = NO;
+        self.oppName.hidden = NO;
+        
+        self.helpButtonLabel.text = @"weak against Fire Monsters, and Water Monsters are strong against Fire Monsters, but weak against Ice Monsters.";
+    
+    }else if (self.nextButtonTally == 9) {
+        
+        [self hideEverythingOnFightScreen];
+        
+        self.helpButtonLabel.text = @"As you win fights, your opponents become stronger, but your monster will level up. Level 2 is reached at 20 wins, and level 3 is reached at 50 wins.";
+
+    }else if (self.nextButtonTally == 10) {
+        
+        self.helpButtonLabel.text = @"Now, get back to the FIGHT!";
+        self.nextButton.hidden = YES;
+        self.previousButton.hidden = YES;
+        
+    }else{
+        
+        [self hideEverythingOnFightScreen];
+        self.backToFightButton.hidden = NO;
+    }
 }
 
-// WHEN YOU NEED TO HIDE EVERYTHING ON THE FIGHT SCREEN, BUTTONS ARE INCLUDED FROM SEPARATE METHOD
-- (void)hideEverythingOnFightScreen {
-   
-    self.startButton.hidden = YES;
-    self.oppPic.hidden = YES;
-    self.oppName.hidden = YES;
-    self.userPic.hidden = YES;
-    self.userName.hidden = YES;
-    self.continueButton.hidden = YES;
-    self.retaliateButton.hidden = YES;
-    self.restartButton.hidden = YES;
-    self.oppElement.hidden = YES;
-    self.userElement.hidden = YES;
-    self.oppHealth.hidden = YES;
-    self.userHealth.hidden = YES;
-    [self hideUserButtons];
+- (IBAction)homeButtonWasPressed:(id)sender {
+    
+    [self hideEverythingOnFightScreen];
+    
+    [self viewCashAmount];
+    
+    self.startButton.hidden = NO;
+    
+    NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
+    self.levelUpPic.image = [UIImage imageNamed: userImage];
+    self.levelUpPic.hidden = NO;
+    
+    self.currentLevelLabel.hidden = NO;
     
 }
 
-// WHEN YOU NEED TO UNHIDE EVERYTHING ON THE FIGHT SCREEN, BUTTONS ARE INCLUDED FROM SEPARATE METHOD
-- (void)unhideEverythingOnFightScreen {
-    
-    self.oppPic.hidden = NO;
-    self.oppName.hidden = NO;
-    self.userPic.hidden = NO;
-    self.userName.hidden = NO;
-    self.oppElement.hidden = NO;
-    self.userElement.hidden = NO;
-    self.fightBackground.image = [UIImage imageNamed:@"monstersBackground"];
-    [self unhideUserButtons];
-    
-}
 
-// RETURN TO FIGHT BUTTON WAS PRESSED FROM STORE
-- (IBAction)backToFightButtonWasPressed:(id)sender {
-    
-    //self.startButton.hidden = YES;
-    //self.continueButton.hidden = YES;
-    //self.retaliateButton.hidden = YES;
-    //self.restartButton.hidden = YES;
-    self.storeItem1.hidden = YES;
-    self.storeItem2.hidden = YES;
-    self.storeItem3.hidden = YES;
-    self.storeItem4.hidden = YES;
-    self.storeItem5.hidden = YES;
-    self.storeItem1Label.hidden = YES;
-    self.storeItem2Label.hidden = YES;
-    self.storeItem3Label.hidden = YES;
-    self.storeItem4Label.hidden = YES;
-    self.storeItem5Label.hidden = YES;
-    self.backToFightButton.hidden = YES;
-    self.availableCashLabel.hidden = YES;
-    self.fightBackground.alpha = 1;
-    [self unhideEverythingOnFightScreen];
-}
-
-// CASH AND STORE_______________________________________________________________________________________
+// CASH AND STORE__________________________________________________________________________________________
 
 // SHOW CASH LEVEL AND STORE ITEMS
 - (IBAction)cashButtonWasPressed:(id)sender {
@@ -619,23 +752,17 @@
 - (IBAction)storeItem1WasPressed:(id)sender {
     
     if (self.cash >= 50) {
-    
         self.healthPacks += 1;
-        
         self.cash -= 50;
     
         [self setCashAmount];
-        
         [self viewCashAmount];
         
         self.healthPacksTitle = [NSString stringWithFormat:@"✚: %d",self.healthPacks];
         
         [self.healthPacksButton setTitle: self.healthPacksTitle forState: UIControlStateNormal];
-    
         [self updateItemsStock];
-        
     }
-
 }
 
 // HEALTH PACK WAS USED
@@ -652,7 +779,6 @@
     self.userHealth.text = [NSString stringWithFormat:@"%d", self.user.health];
     
     [self updateItemsStock];
-    
 }
 
 // SHOULD HEALTH PACK BE VISIBLE
@@ -842,6 +968,7 @@
 }
 
 
+// WINNING, LOSING, SAVING THE GAME________________________________________________________________________
 
 // USER WINS
 - (void)oppLoses {
@@ -928,6 +1055,7 @@
     [self.defaults synchronize];
 }
 
+
 // LOAD ITEM QUANTITIES
 - (void)viewItemsStock {
     
@@ -948,6 +1076,8 @@
     [self shouldCrushButtonBeVisible];
 }
 
+// METHODS FOR HIDING/UNHIDING AND CHANGING SCREENS________________________________________________________
+
 // ONLY HIDE USER BUTTONS
 - (void)hideUserButtons {
     
@@ -959,8 +1089,8 @@
     self.attack2.hidden = YES;
     self.attack3.hidden = YES;
     self.attack4.hidden = YES;
-    self.replaceMonsterButton.hidden = YES;
-    self.currentLevelLabel.hidden = YES;
+    self.helpButton.hidden = YES;
+    self.homeButton.hidden = YES;
 }
 // UNHIDE USER BUTTONS
 - (void)unhideUserButtons {
@@ -972,11 +1102,100 @@
     self.attack2.hidden = NO;
     self.attack3.hidden = NO;
     self.attack4.hidden = NO;
-    self.replaceMonsterButton.hidden = NO;
-    self.currentLevelLabel.hidden = NO;
+    self.helpButton.hidden = NO;
+    self.homeButton.hidden = NO;
     [self shouldCrushButtonBeVisible];
     [self shouldHealthPacksBeVisible];
     [self shouldDoubleTapButtonBeVisible];
+}
+
+
+// WHEN YOU NEED TO HIDE EVERYTHING ON THE FIGHT SCREEN, BUTTONS ARE INCLUDED FROM SEPARATE METHOD
+- (void)hideEverythingOnFightScreen {
+    
+    //self.startButton.hidden = YES;
+    self.oppPic.hidden = YES;
+    self.oppName.hidden = YES;
+    self.userPic.hidden = YES;
+    self.userName.hidden = YES;
+    self.continueButton.hidden = YES;
+    self.retaliateButton.hidden = YES;
+    self.restartButton.hidden = YES;
+    self.oppElement.hidden = YES;
+    self.userElement.hidden = YES;
+    self.oppHealth.hidden = YES;
+    self.userHealth.hidden = YES;
+    [self hideUserButtons];
+}
+
+
+// WHEN YOU NEED TO UNHIDE EVERYTHING ON THE FIGHT SCREEN, BUTTONS ARE INCLUDED FROM SEPARATE METHOD
+- (void)unhideEverythingOnFightScreen {
+    
+    self.oppPic.hidden = NO;
+    self.oppName.hidden = NO;
+    self.userPic.hidden = NO;
+    self.userName.hidden = NO;
+    self.oppElement.hidden = NO;
+    self.userElement.hidden = NO;
+    self.fightBackground.image = [UIImage imageNamed:@"monstersBackground"];
+    [self unhideUserButtons];
+}
+
+// USER FIGHT BUTTONS ARE ENABLED
+- (void)enableUserButtons {
+    
+    self.attack1.enabled = YES;
+    self.attack2.enabled = YES;
+    self.attack3.enabled = YES;
+    self.attack4.enabled = YES;
+    self.cashButton.enabled = YES;
+    self.doubleTapButton.enabled = YES;
+    self.healthPacksButton.enabled = YES;
+    self.crushButton.enabled = YES;
+    self.helpButton.enabled = YES;
+    self.homeButton.enabled = YES;
+}
+
+// USER FIGHT BUTTONS ARE DISABLED
+- (void)disableUserButtons {
+ 
+    self.attack1.enabled = NO;
+    self.attack2.enabled = NO;
+    self.attack3.enabled = NO;
+    self.attack4.enabled = NO;
+    self.cashButton.enabled = NO;
+    self.doubleTapButton.enabled = NO;
+    self.healthPacksButton.enabled = NO;
+    self.crushButton.enabled = NO;
+    self.helpButton.enabled = NO;
+    self.homeButton.enabled = NO;
+}
+
+// RETURN TO FIGHT BUTTON WAS PRESSED FROM STORE
+- (IBAction)backToFightButtonWasPressed:(id)sender {
+    
+    [self viewCashAmount];
+    [self viewItemsStock];
+    [self enableUserButtons];
+    self.storeItem1.hidden = YES;
+    self.storeItem2.hidden = YES;
+    self.storeItem3.hidden = YES;
+    self.storeItem4.hidden = YES;
+    self.storeItem5.hidden = YES;
+    self.storeItem1Label.hidden = YES;
+    self.storeItem2Label.hidden = YES;
+    self.storeItem3Label.hidden = YES;
+    self.storeItem4Label.hidden = YES;
+    self.storeItem5Label.hidden = YES;
+    self.backToFightButton.hidden = YES;
+    self.availableCashLabel.hidden = YES;
+    self.nextButton.hidden = YES;
+    self.previousButton.hidden = YES;
+    self.nextButtonTally = 0;
+    self.helpButtonLabel.hidden = YES;
+    self.fightBackground.alpha = 1;
+    [self unhideEverythingOnFightScreen];
 }
 
 
@@ -994,21 +1213,21 @@ Overview: I want to convert the monster fight app into a digipet type game, wher
  - **No animations right now for crush or touble tap button.
  
  Future
- - A streak button, and a way to keep track of the streak. The saved streak should also determine difficulty of the monsters. If streak gets higher than 10, add 50 to opponents health. If it gets higher to 20, add 100 to opponents health and make their attacks stronger.
 
- - A page that explains everything
+ - maybe make user stronger at level 3
+ - A page that explains everything - keep going with this
 
  - A home button for the fight screen, and for after the fight is over. If the fight is over and the home button is hit, the user just goes to the home screen. If the fight isn't over, the user loses. 
  
  - Home screen should be sort of be the monster's layer, where you can see what he looks like. On the layer, he should blink and jump around a little. Home layer should show win/loss ratio, lives,
  
- - A win count, loss count, lives count, and level count. 
+ - need splash screen and better icon
  
- - need to take away randomly generate monster
+ - need to credit guy who created monsters
  
- - need to remove height constraints on monsters
+ - can't see opp monster on screen that discusses elements. Also the crush buttons and such aren't displaying right.
  
- - when user loses the restart button is still up.
+
  
  */
 @end
