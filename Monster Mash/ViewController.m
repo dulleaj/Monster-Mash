@@ -84,7 +84,10 @@
 @property NSTimer* oppFlinchTime;
 @property NSTimer* userFlinchTime;
 @property NSTimer* userLevelsUp;
+@property NSTimer* homeMovementTime;
 @property int currentImageCount;
+
+@property (weak, nonatomic) IBOutlet UILabel *yourMonsterLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *levelUpPic;
 @property (weak, nonatomic) IBOutlet UILabel *levelUpLabel;
 
@@ -97,8 +100,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentLevelLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
-
-
 
 @end
 
@@ -144,7 +145,10 @@
     
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
     self.levelUpPic.image = [UIImage imageNamed: userImage];
+    [self userGoesHome:YES];
+    
     self.levelUpPic.hidden = NO;
+    self.yourMonsterLabel.hidden = NO;
     
     self.currentLevelLabel.hidden = NO;
     
@@ -193,6 +197,7 @@
     self.userElement.hidden = NO;
     self.fightBackground.alpha = 1;
     self.levelUpPic.hidden = YES;
+    self.yourMonsterLabel.hidden = YES;
     [self unhideUserButtons];
 }
 
@@ -367,6 +372,31 @@
         [self generateOppMonster];
         [self unhideEverythingOnFightScreen];
         
+    }
+}
+
+
+// HOME TIMER IS CALLED
+- (void)userGoesHome:(BOOL)animated{
+    
+    self.homeMovementTime = [NSTimer scheduledTimerWithTimeInterval:0.25
+                                                            target:self
+                                                          selector:@selector(changeImageForHome)
+                                                          userInfo:nil
+                                                           repeats:YES];
+}
+
+// SELECTOR FOR HOME TIMER
+- (void)changeImageForHome {
+ 
+    self.currentImageCount += 1;
+    
+    NSString* userPicString = [NSString stringWithFormat:@"5L%d_H%d",self.currentLevel,self.currentImageCount];
+    self.levelUpPic.image = [UIImage imageNamed: userPicString];
+    
+    if (self.currentImageCount >= 2){
+        
+        [self invalidateTimer:self.homeMovementTime];
     }
 }
 
@@ -696,7 +726,7 @@
 
     }else if (self.nextButtonTally == 10) {
         
-        self.helpButtonLabel.text = @"Now, get back to the FIGHT!";
+        self.helpButtonLabel.text = @"Icons made by Freepik from www.flaticon.com. Now, get back to the FIGHT!";
         self.nextButton.hidden = YES;
         self.previousButton.hidden = YES;
         
@@ -713,11 +743,14 @@
     
     [self viewCashAmount];
     
-    self.startButton.hidden = NO;
-    
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
     self.levelUpPic.image = [UIImage imageNamed: userImage];
+    [self userGoesHome:YES];
+    
+    self.startButton.hidden = NO;
+    
     self.levelUpPic.hidden = NO;
+    self.yourMonsterLabel.hidden = NO;
     
     self.currentLevelLabel.hidden = NO;
     
@@ -1113,7 +1146,6 @@
 // WHEN YOU NEED TO HIDE EVERYTHING ON THE FIGHT SCREEN, BUTTONS ARE INCLUDED FROM SEPARATE METHOD
 - (void)hideEverythingOnFightScreen {
     
-    //self.startButton.hidden = YES;
     self.oppPic.hidden = YES;
     self.oppName.hidden = YES;
     self.userPic.hidden = YES;
@@ -1199,35 +1231,4 @@
 }
 
 
-
-/*
-
-Overview: I want to convert the monster fight app into a digipet type game, where the monster has a home screen and needs to be fed, can have items bought for him, and can gamble money to make more? That could be cool. Could also look into adding features to the user's monster. Also - every two days I should add a new monster, also I should pick a standard monster for the user and give him 3 more upgraded views. Something where he can get bigger.
- 
- Tonight:
- - when user hits new level it doesnt generate new user
- - cant use fright for computer because he changes with users level
- - add method that hides everything and shows level change with celebration - should be placed after win.
- - Remove "Change Monster" button, replace with help button.
- - Change intro/landing.
- - **No animations right now for crush or touble tap button.
- 
- Future
-
- - maybe make user stronger at level 3
- - A page that explains everything - keep going with this
-
- - A home button for the fight screen, and for after the fight is over. If the fight is over and the home button is hit, the user just goes to the home screen. If the fight isn't over, the user loses. 
- 
- - Home screen should be sort of be the monster's layer, where you can see what he looks like. On the layer, he should blink and jump around a little. Home layer should show win/loss ratio, lives,
- 
- - need splash screen and better icon
- 
- - need to credit guy who created monsters
- 
- - can't see opp monster on screen that discusses elements. Also the crush buttons and such aren't displaying right.
- 
-
- 
- */
 @end

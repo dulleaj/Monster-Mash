@@ -28,6 +28,7 @@
 
 @property NSArray* monsterFrontImages;
 @property NSArray* monsterBackImages;
+@property NSArray* monsterHomeImages;
 
 - (void) monsterRoster: (int)intForMonster and:(int)currentUserWins; //This is how the monster is randomly selected
 

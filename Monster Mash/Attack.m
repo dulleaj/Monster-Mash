@@ -33,9 +33,7 @@
             
             self.attackName = @"Guillotine";
             self.attackDamage = 25;
-
         }
-        
     }
 
     if (monster == 1) { // FIRE
@@ -59,9 +57,7 @@
             
             self.attackName = @"Vice Grip";
             self.attackDamage = 35;
-            
         }
-        
     }
 
     if (monster == 2) { // WATER
@@ -85,10 +81,9 @@
             
             self.attackName = @"Hyper Beam";
             self.attackDamage = 30;
-            
         }
-        
     }
+    
     if (monster == 3) { // ICE
         
         if (attack == 1) {
@@ -110,9 +105,7 @@
             
             self.attackName = @"Headbutt";
             self.attackDamage = 20;
-            
         }
-        
     }
 
     if (monster == 4) { // WATER
@@ -136,9 +129,7 @@
             
             self.attackName = @"Hurricane";
             self.attackDamage = 25;
-            
         }
-        
     }
 
     if (monster == 5) { // FIRE
@@ -162,11 +153,8 @@
             
             self.attackName = @"Dark Pulse";
             self.attackDamage = 35;
-            
         }
-        
     }
-
 }
 
 @end

@@ -521,10 +521,10 @@
                                 <rect key="frame" x="519" y="23" width="46" height="30"/>
                                 <color key="backgroundColor" red="0.13360543529999999" green="0.13592366080000001" blue="0.34737580130000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="WKs-6l-ME3"/>
-                                    <constraint firstAttribute="width" constant="25" id="jwI-Mk-Krg"/>
+                                    <constraint firstAttribute="height" constant="30" id="WKs-6l-ME3"/>
+                                    <constraint firstAttribute="width" constant="50" id="jwI-Mk-Krg"/>
                                 </constraints>
-                                <state key="normal" title="🏚">
+                                <state key="normal" title="HOME">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -555,6 +555,16 @@
                                     <action selector="previousButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O32-hQ-iWK"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="(Your Monster)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wl0-lS-3c3">
+                                <rect key="frame" x="451" y="77" width="42" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="AnN-rr-BlS"/>
+                                    <constraint firstAttribute="width" constant="250" id="knb-mJ-0Pc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -610,6 +620,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="XH1-oW-Ula" secondAttribute="trailing" constant="10" id="bvT-nd-YII"/>
                             <constraint firstItem="cwI-kw-Iyj" firstAttribute="top" secondItem="Vuf-mU-omh" secondAttribute="bottom" constant="50" id="cEg-28-qwD"/>
                             <constraint firstItem="qgu-dZ-kfk" firstAttribute="top" secondItem="0Ad-he-2nY" secondAttribute="bottom" constant="75" id="cWN-VW-3bT"/>
+                            <constraint firstItem="Wl0-lS-3c3" firstAttribute="centerX" secondItem="uS3-4O-OHM" secondAttribute="centerX" id="cvz-Wi-iYC"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OjV-ds-Zvf" secondAttribute="trailing" constant="25" id="ewg-qS-buL"/>
                             <constraint firstItem="0Sx-4g-Ekz" firstAttribute="leading" secondItem="5rx-Jt-pJE" secondAttribute="trailing" constant="5" id="fOS-32-s6y"/>
                             <constraint firstItem="fHx-L6-imT" firstAttribute="centerY" secondItem="Wzp-F6-nvP" secondAttribute="centerY" id="gY2-WH-lrI"/>
@@ -628,6 +639,7 @@
                             <constraint firstItem="Wlx-7Y-1ap" firstAttribute="top" secondItem="Wzp-F6-nvP" secondAttribute="bottom" constant="50" id="leM-KY-c8x"/>
                             <constraint firstItem="0Ad-he-2nY" firstAttribute="top" secondItem="Wlx-7Y-1ap" secondAttribute="bottom" constant="50" id="lrp-M6-Dvf"/>
                             <constraint firstItem="wBp-gF-ST5" firstAttribute="centerX" secondItem="pW7-B1-ANc" secondAttribute="centerX" id="mjC-kY-b6o"/>
+                            <constraint firstItem="uS3-4O-OHM" firstAttribute="top" secondItem="Wl0-lS-3c3" secondAttribute="bottom" constant="15" id="mnn-r4-hQk"/>
                             <constraint firstItem="AZs-u8-RpL" firstAttribute="centerY" secondItem="cwI-kw-Iyj" secondAttribute="centerY" id="mue-1Y-yTI"/>
                             <constraint firstItem="Wzp-F6-nvP" firstAttribute="centerX" secondItem="Vuf-mU-omh" secondAttribute="centerX" id="n2s-KI-Gba"/>
                             <constraint firstItem="5rx-Jt-pJE" firstAttribute="leading" secondItem="pW7-B1-ANc" secondAttribute="leading" id="ny4-cR-E52"/>
@@ -702,6 +714,7 @@
                         <outlet property="userHealth" destination="2ZU-jM-hlP" id="fN1-f9-CzZ"/>
                         <outlet property="userName" destination="b7T-kM-48G" id="9gV-7s-4ne"/>
                         <outlet property="userPic" destination="OjV-ds-Zvf" id="Wyg-tx-z1I"/>
+                        <outlet property="yourMonsterLabel" destination="Wl0-lS-3c3" id="gV4-7n-Mf5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

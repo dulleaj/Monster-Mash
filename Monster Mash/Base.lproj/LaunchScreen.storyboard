@@ -17,21 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Monster Mash" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Tv-iW-OoT">
-                                <rect key="frame" x="184" y="263" width="242" height="56"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="56" id="eX6-ps-iWm"/>
-                                    <constraint firstAttribute="width" constant="242" id="pyd-El-NTs"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="40"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="monsterMashSplash" translatesAutoresizingMaskIntoConstraints="NO" id="8pJ-yD-BHZ">
+                                <rect key="frame" x="180" y="236" width="240" height="128"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.92941176470588238" green="0.5490196078431373" blue="0.55294117647058827" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="9Tv-iW-OoT" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="WnZ-Z3-Dni"/>
-                            <constraint firstItem="9Tv-iW-OoT" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="raX-cb-LPl"/>
+                            <constraint firstItem="8pJ-yD-BHZ" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="0NU-35-vB0"/>
+                            <constraint firstItem="8pJ-yD-BHZ" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="LQW-if-Luw"/>
+                            <constraint firstItem="8pJ-yD-BHZ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="eCR-I6-FaH"/>
+                            <constraint firstItem="8pJ-yD-BHZ" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="eaX-mj-cYl"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -40,4 +34,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="monsterMashSplash" width="254" height="450"/>
+    </resources>
 </document>
