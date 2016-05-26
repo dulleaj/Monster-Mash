@@ -138,20 +138,15 @@
     self.nextButton.hidden = YES;
     self.previousButton.hidden = YES;
     [self hideUserButtons];
-
-    [self viewCashAmount];
     
-    self.startButton.hidden = NO;
+    [self setLevel];
+    [self setCashAmount];
+    [self viewCashAmount];
     
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
     self.levelUpPic.image = [UIImage imageNamed: userImage];
+    
     [self userGoesHome:YES];
-    
-    self.levelUpPic.hidden = NO;
-    self.yourMonsterLabel.hidden = NO;
-    
-    self.currentLevelLabel.hidden = NO;
-    
     
     [self.storeItem1 setTitle:@"+1 Health Pack" forState: UIControlStateNormal];
     [self.storeItem2 setTitle:@"+1 Double Tap" forState: UIControlStateNormal];
@@ -378,6 +373,12 @@
 
 // HOME TIMER IS CALLED
 - (void)userGoesHome:(BOOL)animated{
+    
+    [self setLevel];
+    self.startButton.hidden = NO;
+    self.levelUpPic.hidden = NO;
+    self.yourMonsterLabel.hidden = NO;
+    self.currentLevelLabel.hidden = NO;
     
     self.homeMovementTime = [NSTimer scheduledTimerWithTimeInterval:0.25
                                                             target:self
@@ -746,14 +747,6 @@
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
     self.levelUpPic.image = [UIImage imageNamed: userImage];
     [self userGoesHome:YES];
-    
-    self.startButton.hidden = NO;
-    
-    self.levelUpPic.hidden = NO;
-    self.yourMonsterLabel.hidden = NO;
-    
-    self.currentLevelLabel.hidden = NO;
-    
 }
 
 
@@ -761,6 +754,9 @@
 
 // SHOW CASH LEVEL AND STORE ITEMS
 - (IBAction)cashButtonWasPressed:(id)sender {
+    
+    [self viewItemsStock];
+    [self viewCashAmount];
     
     [self hideEverythingOnFightScreen];
     
@@ -776,8 +772,6 @@
     self.storeItem5Label.hidden = NO;
     self.backToFightButton.hidden = NO;
     self.fightBackground.alpha = 0.3;
-
-    [self viewCashAmount];
     self.availableCashLabel.hidden = NO;
 }
 
@@ -987,21 +981,33 @@
         self.cash -= 500;
         
         [self setCashAmount];
-        
         [self viewCashAmount];
         
         self.defaults = [NSUserDefaults standardUserDefaults];
         [self.defaults setBool:YES forKey:@"Juggernaut"];
         [self.defaults synchronize];
-
-        self.storeItem5.backgroundColor = [UIColor grayColor];
         
-        // FIND WAY TO SHOW ITEM IS OWNED
+        self.storeItem5.backgroundColor = [UIColor grayColor];
     }
 }
 
 
 // WINNING, LOSING, SAVING THE GAME________________________________________________________________________
+
+// SET LEVEL
+- (void)setLevel{
+    
+    if(self.winCount < 20){
+        self.currentLevel = 1;
+        
+    }else if ((self.winCount >= 20) && (self.winCount < 50)){
+        self.currentLevel = 2;
+        
+    }else if (self.winCount >= 50){
+        self.currentLevel = 3;
+    }
+}
+
 
 // USER WINS
 - (void)oppLoses {
@@ -1012,17 +1018,7 @@
     self.cash += 10;
     self.winCount +=1;
     
-    // SETTING USER LEVEL
-    if(self.winCount < 20){
-        self.currentLevel = 1;
-        
-    }else if ((self.winCount >= 20) && (self.winCount < 50)){
-        self.currentLevel = 2;
-        
-    }else if (self.winCount >= 50){
-        self.currentLevel = 3;
-    }
-    
+    [self setLevel];
     [self setCashAmount];
     [self viewCashAmount];
     
@@ -1102,7 +1098,12 @@
     self.crushAttacks = (int)[self.defaults integerForKey:@"Crush Attacks"];
     self.crushAttacksTitle = [NSString stringWithFormat:@"☠: %d",self.crushAttacks];
     
-    [self.defaults boolForKey:@"Juggernaut"];
+    self.juggernautItemIsOwned = [self.defaults boolForKey:@"Juggernaut"];
+    
+    if (self.juggernautItemIsOwned == YES){
+        
+        self.storeItem5.backgroundColor = [UIColor grayColor];
+    }
     
     [self shouldHealthPacksBeVisible];
     [self shouldDoubleTapButtonBeVisible];
