@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "Monsters.h"
+#import "RIPViewController.h"
+#import "RIPTableViewCell.h"
 
 @interface ViewController ()
 
@@ -100,6 +102,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentLevelLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
+@property (weak, nonatomic) IBOutlet UIButton *restInPeaceButton;
 
 @end
 
@@ -107,7 +110,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    // Despite memory problems, viewItemStock is working
     
     self.oppPic.hidden = YES;
     self.oppName.hidden = YES;
@@ -138,10 +141,8 @@
     self.nextButton.hidden = YES;
     self.previousButton.hidden = YES;
     [self hideUserButtons];
-    
-    [self setLevel];
-    [self setCashAmount];
-    [self viewCashAmount];
+
+    [self loadRankings];
     
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
     self.levelUpPic.image = [UIImage imageNamed: userImage];
@@ -172,7 +173,7 @@
     
     self.defeatedMonsters = [[NSMutableArray alloc] init];
     
-    [self viewItemsStock];
+    [self loadStoreItems];
     [self generateOppMonster];
     [self generateUserMonster];
     
@@ -181,6 +182,7 @@
     
     self.currentLevelLabel.hidden = YES;
     self.startButton.hidden = YES;
+    self.restInPeaceButton.hidden = YES;
     self.oppPic.hidden = NO;
     self.oppName.hidden = NO;
     self.userPic.hidden = NO;
@@ -362,7 +364,7 @@
         self.levelUpLabel.hidden = YES;
         self.fightBackground.image = [UIImage imageNamed:@"monstersBackground"];
         
-        [self viewItemsStock];
+        [self updateMonsterLevels];
         [self generateUserMonster];
         [self generateOppMonster];
         [self unhideEverythingOnFightScreen];
@@ -374,8 +376,10 @@
 // HOME TIMER IS CALLED
 - (void)userGoesHome:(BOOL)animated{
     
-    [self setLevel];
+    //[self setLevel];
+    [self updateMonsterLevels];
     self.startButton.hidden = NO;
+    self.restInPeaceButton.hidden = NO;
     self.levelUpPic.hidden = NO;
     self.yourMonsterLabel.hidden = NO;
     self.currentLevelLabel.hidden = NO;
@@ -569,7 +573,7 @@
         
     } else {
     
-        [self viewItemsStock];
+        [self updateMonsterLevels];
         [self generateUserMonster];
         [self generateOppMonster];
         [self unhideEverythingOnFightScreen];
@@ -742,8 +746,6 @@
     
     [self hideEverythingOnFightScreen];
     
-    [self viewCashAmount];
-    
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
     self.levelUpPic.image = [UIImage imageNamed: userImage];
     [self userGoesHome:YES];
@@ -755,8 +757,8 @@
 // SHOW CASH LEVEL AND STORE ITEMS
 - (IBAction)cashButtonWasPressed:(id)sender {
     
-    [self viewItemsStock];
-    [self viewCashAmount];
+    [self loadStoreItems];
+    [self updateMonsterLevels];
     
     [self hideEverythingOnFightScreen];
     
@@ -782,13 +784,13 @@
         self.healthPacks += 1;
         self.cash -= 50;
     
-        [self setCashAmount];
-        [self viewCashAmount];
+        [self saveRankings];
+        [self updateMonsterLevels];
         
         self.healthPacksTitle = [NSString stringWithFormat:@"✚: %d",self.healthPacks];
         
         [self.healthPacksButton setTitle: self.healthPacksTitle forState: UIControlStateNormal];
-        [self updateItemsStock];
+        [self saveStoreItems];
     }
 }
 
@@ -805,7 +807,7 @@
     
     self.userHealth.text = [NSString stringWithFormat:@"%d", self.user.health];
     
-    [self updateItemsStock];
+    [self saveStoreItems];
 }
 
 // SHOULD HEALTH PACK BE VISIBLE
@@ -835,15 +837,14 @@
         
         self.cash -= 50;
         
-        [self setCashAmount];
-        
-        [self viewCashAmount];
+        [self saveRankings];
+        [self updateMonsterLevels];
         
         self.doubleTapsTitle = [NSString stringWithFormat:@"⚡︎: %d",self.doubleTaps];
         
         [self.doubleTapButton setTitle: self.doubleTapsTitle forState: UIControlStateNormal];
         
-        [self updateItemsStock];
+        [self saveStoreItems];
     }
 }
 
@@ -862,7 +863,7 @@
     
     self.oppHealth.text = [NSString stringWithFormat:@"%d", self.opp.health];
 
-    [self updateItemsStock];
+    [self saveStoreItems];
     
     if (self.opp.health <= 0){
         
@@ -896,15 +897,14 @@
         
         self.cash -= 125;
         
-        [self setCashAmount];
-        
-        [self viewCashAmount];
+        [self saveRankings];
+        [self updateMonsterLevels];
         
         self.healthPacksTitle = [NSString stringWithFormat:@"✚: %d",self.healthPacks];
         
         [self.healthPacksButton setTitle: self.healthPacksTitle forState: UIControlStateNormal];
         
-        [self updateItemsStock];
+        [self saveStoreItems];
     }
 }
 
@@ -919,15 +919,14 @@
         
         self.cash -= 150;
         
-        [self setCashAmount];
-        
-        [self viewCashAmount];
+        [self saveRankings];
+        [self updateMonsterLevels];
         
         self.crushAttacksTitle = [NSString stringWithFormat:@"☠: %d",self.crushAttacks];
         
         [self.crushButton setTitle: self.crushAttacksTitle forState: UIControlStateNormal];
         
-        [self updateItemsStock];
+        [self saveStoreItems];
     }
 }
 
@@ -946,7 +945,7 @@
     
     self.oppHealth.text = [NSString stringWithFormat:@"%d", self.opp.health];
     
-    [self updateItemsStock];
+    [self saveStoreItems];
     
     if (self.opp.health <= 0){
         
@@ -980,8 +979,8 @@
         
         self.cash -= 500;
         
-        [self setCashAmount];
-        [self viewCashAmount];
+        [self saveRankings];
+        [self updateMonsterLevels];
         
         self.defaults = [NSUserDefaults standardUserDefaults];
         [self.defaults setBool:YES forKey:@"Juggernaut"];
@@ -994,33 +993,19 @@
 
 // WINNING, LOSING, SAVING THE GAME________________________________________________________________________
 
-// SET LEVEL
-- (void)setLevel{
-    
-    if(self.winCount < 20){
-        self.currentLevel = 1;
-        
-    }else if ((self.winCount >= 20) && (self.winCount < 50)){
-        self.currentLevel = 2;
-        
-    }else if (self.winCount >= 50){
-        self.currentLevel = 3;
-    }
-}
-
-
 // USER WINS
 - (void)oppLoses {
     
     self.view.backgroundColor = [UIColor greenColor];
     self.fightBackground.alpha = 0.5;
     
+    [self.defeatedMonsters addObject:[NSNumber numberWithInt:self.opp.monsterInt]];
+    
     self.cash += 10;
     self.winCount +=1;
     
-    [self setLevel];
-    [self setCashAmount];
-    [self viewCashAmount];
+    [self updateMonsterLevels];
+    [self saveRankings];
     
     [self hideUserButtons];
     self.oppHealth.hidden = YES;
@@ -1037,8 +1022,9 @@
     
     self.cash -= 10;
     self.lossCount +=1;
-    [self setCashAmount];
-    [self viewCashAmount];
+    
+    [self saveRankings];
+    [self updateMonsterLevels];
     
     [self hideUserButtons];
     self.userHealth.hidden = YES;
@@ -1048,19 +1034,23 @@
 }
 
 // SET CASH, WINS, LOSSES, LEVEL
-- (void)setCashAmount {
+- (void)saveRankings {
     
     self.defaults = [NSUserDefaults standardUserDefaults];
     [self.defaults setInteger:self.cash forKey:@"Money"];
     [self.defaults setInteger:self.winCount forKey:@"Wins"];
     [self.defaults setInteger:self.lossCount forKey:@"Losses"];
     [self.defaults setInteger:self.currentLevel forKey:@"Level"];
+    [self.defaults setObject:self.defeatedMonsters forKey:@"Defeated Monsters"];
+    
     [self.defaults synchronize];
+    
 }
 
 // LOAD CASH, WINS, LOSSES, LEVEL, LEVEL ANIMATIONS
-- (void)viewCashAmount {
+- (void)loadRankings {
     
+    [self.defaults synchronize];
     self.defaults = [NSUserDefaults standardUserDefaults];
     self.cash = (int)[self.defaults integerForKey:@"Money"];
     self.winCount = (int)[self.defaults integerForKey:@"Wins"];
@@ -1068,14 +1058,12 @@
     self.currentLevel = (int)[self.defaults integerForKey:@"Level"];
     self.level2AnimationWasViewed = [self.defaults boolForKey:@"Animation 2 Viewed"];
     self.level3AnimationWasViewed = [self.defaults boolForKey:@"Animation 3 Viewed"];
-    
-    self.availableCashLabel.text = [NSString stringWithFormat:@"Total Cash: $%d",self.cash];
-    self.currentLevelLabel.text = [NSString stringWithFormat:@"User Level: %d, Total Wins: %d",self.currentLevel, self.winCount];
+    self.defeatedMonsters = [self.defaults objectForKey:@"Defeated Monsters"];
 }
 
 
 // UPDATE ITEM QUANTITIES
-- (void)updateItemsStock {
+- (void)saveStoreItems {
     
     self.defaults = [NSUserDefaults standardUserDefaults];
     [self.defaults setInteger:self.healthPacks forKey:@"Health Packs"];
@@ -1086,7 +1074,7 @@
 
 
 // LOAD ITEM QUANTITIES
-- (void)viewItemsStock {
+- (void)loadStoreItems {
     
     self.defaults = [NSUserDefaults standardUserDefaults];
     self.healthPacks = (int)[self.defaults integerForKey:@"Health Packs"];
@@ -1099,6 +1087,22 @@
     self.crushAttacksTitle = [NSString stringWithFormat:@"☠: %d",self.crushAttacks];
     
     self.juggernautItemIsOwned = [self.defaults boolForKey:@"Juggernaut"];
+}
+
+- (void)updateMonsterLevels {
+    
+    if(self.winCount < 20){
+        self.currentLevel = 1;
+        
+    }else if ((self.winCount >= 20) && (self.winCount < 50)){
+        self.currentLevel = 2;
+        
+    }else if (self.winCount >= 50){
+        self.currentLevel = 3;
+    }
+    
+    self.availableCashLabel.text = [NSString stringWithFormat:@"Total Cash: $%d",self.cash];
+    self.currentLevelLabel.text = [NSString stringWithFormat:@"User Level: %d, Total Wins: %d",self.currentLevel, self.winCount];
     
     if (self.juggernautItemIsOwned == YES){
         
@@ -1208,8 +1212,9 @@
 // RETURN TO FIGHT BUTTON WAS PRESSED FROM STORE
 - (IBAction)backToFightButtonWasPressed:(id)sender {
     
-    [self viewCashAmount];
-    [self viewItemsStock];
+    [self updateMonsterLevels];
+    [self saveStoreItems];
+    
     [self enableUserButtons];
     self.storeItem1.hidden = YES;
     self.storeItem2.hidden = YES;
@@ -1231,5 +1236,11 @@
     [self unhideEverythingOnFightScreen];
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    RIPViewController* transtion = segue.destinationViewController;
+    
+    transtion.defeatedMonsterList = self.defeatedMonsters;
+}
 
 @end

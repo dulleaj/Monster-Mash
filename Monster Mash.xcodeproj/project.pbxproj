@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2A38373A1C9F30A200B2DAAF /* Attack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3837391C9F30A200B2DAAF /* Attack.m */; };
+		2A3D12351D08E60000CE9C72 /* RIPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D12341D08E60000CE9C72 /* RIPTableViewCell.m */; };
+		2A6F5BEA1D07AE2F00E1F0F0 /* RIPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A6F5BE91D07AE2F00E1F0F0 /* RIPViewController.m */; };
 		2ADCFA0E1C9A4DEB00F7E820 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADCFA0D1C9A4DEB00F7E820 /* main.m */; };
 		2ADCFA111C9A4DEB00F7E820 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADCFA101C9A4DEB00F7E820 /* AppDelegate.m */; };
 		2ADCFA141C9A4DEB00F7E820 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADCFA131C9A4DEB00F7E820 /* ViewController.m */; };
@@ -20,6 +22,10 @@
 /* Begin PBXFileReference section */
 		2A3837381C9F30A200B2DAAF /* Attack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attack.h; sourceTree = "<group>"; };
 		2A3837391C9F30A200B2DAAF /* Attack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Attack.m; sourceTree = "<group>"; };
+		2A3D12331D08E60000CE9C72 /* RIPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIPTableViewCell.h; sourceTree = "<group>"; };
+		2A3D12341D08E60000CE9C72 /* RIPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIPTableViewCell.m; sourceTree = "<group>"; };
+		2A6F5BE81D07AE2F00E1F0F0 /* RIPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIPViewController.h; sourceTree = "<group>"; };
+		2A6F5BE91D07AE2F00E1F0F0 /* RIPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIPViewController.m; sourceTree = "<group>"; };
 		2ADCFA091C9A4DEA00F7E820 /* Monster Mash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Monster Mash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ADCFA0D1C9A4DEB00F7E820 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2ADCFA0F1C9A4DEB00F7E820 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -69,10 +75,14 @@
 				2ADCFA151C9A4DEB00F7E820 /* Main.storyboard */,
 				2ADCFA121C9A4DEB00F7E820 /* ViewController.h */,
 				2ADCFA131C9A4DEB00F7E820 /* ViewController.m */,
+				2A6F5BE81D07AE2F00E1F0F0 /* RIPViewController.h */,
+				2A6F5BE91D07AE2F00E1F0F0 /* RIPViewController.m */,
 				2ADCFA231C9A5C2C00F7E820 /* Monsters.h */,
 				2ADCFA241C9A5C2C00F7E820 /* Monsters.m */,
 				2A3837381C9F30A200B2DAAF /* Attack.h */,
 				2A3837391C9F30A200B2DAAF /* Attack.m */,
+				2A3D12331D08E60000CE9C72 /* RIPTableViewCell.h */,
+				2A3D12341D08E60000CE9C72 /* RIPTableViewCell.m */,
 				2ADCFA181C9A4DEB00F7E820 /* Assets.xcassets */,
 				2ADCFA1A1C9A4DEB00F7E820 /* LaunchScreen.storyboard */,
 				2ADCFA1D1C9A4DEB00F7E820 /* Info.plist */,
@@ -164,6 +174,8 @@
 				2A38373A1C9F30A200B2DAAF /* Attack.m in Sources */,
 				2ADCFA141C9A4DEB00F7E820 /* ViewController.m in Sources */,
 				2ADCFA111C9A4DEB00F7E820 /* AppDelegate.m in Sources */,
+				2A6F5BEA1D07AE2F00E1F0F0 /* RIPViewController.m in Sources */,
+				2A3D12351D08E60000CE9C72 /* RIPTableViewCell.m in Sources */,
 				2ADCFA0E1C9A4DEB00F7E820 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
