@@ -17,6 +17,7 @@
 		2ADCFA191C9A4DEB00F7E820 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ADCFA181C9A4DEB00F7E820 /* Assets.xcassets */; };
 		2ADCFA1C1C9A4DEB00F7E820 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADCFA1A1C9A4DEB00F7E820 /* LaunchScreen.storyboard */; };
 		2ADCFA251C9A5C2C00F7E820 /* Monsters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADCFA241C9A5C2C00F7E820 /* Monsters.m */; };
+		2ADD1BB01D124E010078A6BB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADD1BAF1D124E010078A6BB /* StatsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		2ADCFA1D1C9A4DEB00F7E820 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2ADCFA231C9A5C2C00F7E820 /* Monsters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Monsters.h; sourceTree = "<group>"; };
 		2ADCFA241C9A5C2C00F7E820 /* Monsters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Monsters.m; sourceTree = "<group>"; };
+		2ADD1BAE1D124E010078A6BB /* StatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewController.h; sourceTree = "<group>"; };
+		2ADD1BAF1D124E010078A6BB /* StatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 				2ADCFA131C9A4DEB00F7E820 /* ViewController.m */,
 				2A6F5BE81D07AE2F00E1F0F0 /* RIPViewController.h */,
 				2A6F5BE91D07AE2F00E1F0F0 /* RIPViewController.m */,
+				2ADD1BAE1D124E010078A6BB /* StatsViewController.h */,
+				2ADD1BAF1D124E010078A6BB /* StatsViewController.m */,
 				2ADCFA231C9A5C2C00F7E820 /* Monsters.h */,
 				2ADCFA241C9A5C2C00F7E820 /* Monsters.m */,
 				2A3837381C9F30A200B2DAAF /* Attack.h */,
@@ -176,6 +181,7 @@
 				2ADCFA111C9A4DEB00F7E820 /* AppDelegate.m in Sources */,
 				2A6F5BEA1D07AE2F00E1F0F0 /* RIPViewController.m in Sources */,
 				2A3D12351D08E60000CE9C72 /* RIPTableViewCell.m in Sources */,
+				2ADD1BB01D124E010078A6BB /* StatsViewController.m in Sources */,
 				2ADCFA0E1C9A4DEB00F7E820 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

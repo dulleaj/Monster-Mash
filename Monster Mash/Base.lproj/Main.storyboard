@@ -761,7 +761,7 @@
         <!--View Controller-->
         <scene sceneID="giJ-fl-hfJ">
             <objects>
-                <viewController id="Q2p-pE-Mfy" customClass="RIPViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Defeated Monsters" id="Q2p-pE-Mfy" customClass="RIPViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="G4f-Fh-N6W"/>
                         <viewControllerLayoutGuide type="bottom" id="VDW-K1-UaR"/>
@@ -796,9 +796,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="cellMonsterImage" destination="Rd5-fY-K00" id="UKG-Gw-FQc"/>
-                                            <segue destination="frr-hw-JOT" kind="popoverPresentation" popoverAnchorView="ZEB-1w-zFw" id="EaG-Gy-xfJ">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -814,9 +811,6 @@
                                     <constraint firstAttribute="height" constant="50" id="Tq7-o0-bQi"/>
                                 </constraints>
                                 <state key="normal" title="Back"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="Xp3-qC-2B7"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -833,32 +827,104 @@
                     <connections>
                         <outlet property="backButton" destination="mkN-ni-PAv" id="7aw-YH-2Le"/>
                         <outlet property="killTableView" destination="K9d-eD-Tab" id="pOY-za-nHg"/>
+                        <segue destination="JVN-HW-yz8" kind="show" identifier="statsSegue" id="acb-Nq-ZCg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hXY-3O-Dvp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="971" y="477"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="JeR-ZM-IsD">
+        <!--Stats View Controller-->
+        <scene sceneID="eKF-tj-HeQ">
             <objects>
-                <viewController id="frr-hw-JOT" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StatsViewController" id="JVN-HW-yz8" customClass="StatsViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XBm-Td-kd8"/>
-                        <viewControllerLayoutGuide type="bottom" id="0yl-YL-QK2"/>
+                        <viewControllerLayoutGuide type="top" id="FFq-53-n3x"/>
+                        <viewControllerLayoutGuide type="bottom" id="rv3-g4-scA"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="gyl-MZ-2CP">
+                    <view key="view" contentMode="scaleToFill" id="1CT-0D-3iV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="els-8P-d5R">
+                                <rect key="frame" x="175" y="100" width="250" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="90F-kY-Xje"/>
+                                    <constraint firstAttribute="height" constant="250" id="Gjd-bS-5Ao"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monster" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="daI-Ul-cLg">
+                                <rect key="frame" x="175" y="375" width="125" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="bow-HQ-xQB"/>
+                                    <constraint firstAttribute="width" constant="125" id="zjz-md-pul"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.1923067681" green="0.1956435369" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHL-9p-ghf">
+                                <rect key="frame" x="325" y="375" width="100" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Nmu-nx-buT"/>
+                                    <constraint firstAttribute="width" constant="100" id="kSJ-WH-6i2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d7d-6j-P7T">
+                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                                <color key="backgroundColor" red="0.3521972471" green="1" blue="0.2096956026" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="k4z-uh-tKe"/>
+                                </constraints>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backToRIPWasPressed:" destination="JVN-HW-yz8" eventType="touchUpInside" id="rgr-8T-1PP"/>
+                                    <segue destination="Q2p-pE-Mfy" kind="show" identifier="backToRIPSegue" id="cXP-bm-12W"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="d7d-6j-P7T" secondAttribute="bottom" id="33f-iT-GR3"/>
+                            <constraint firstItem="QHL-9p-ghf" firstAttribute="centerY" secondItem="daI-Ul-cLg" secondAttribute="centerY" id="7yn-fM-GG2"/>
+                            <constraint firstItem="daI-Ul-cLg" firstAttribute="centerX" secondItem="els-8P-d5R" secondAttribute="centerX" id="8C8-tz-eEI"/>
+                            <constraint firstItem="els-8P-d5R" firstAttribute="centerX" secondItem="1CT-0D-3iV" secondAttribute="centerX" id="L2k-fC-JXL"/>
+                            <constraint firstItem="daI-Ul-cLg" firstAttribute="top" secondItem="els-8P-d5R" secondAttribute="bottom" constant="25" id="MFL-5W-XBd"/>
+                            <constraint firstItem="daI-Ul-cLg" firstAttribute="width" secondItem="els-8P-d5R" secondAttribute="width" id="T5d-OY-RYH"/>
+                            <constraint firstItem="d7d-6j-P7T" firstAttribute="centerX" secondItem="1CT-0D-3iV" secondAttribute="centerX" id="cfo-Pf-rAu"/>
+                            <constraint firstItem="daI-Ul-cLg" firstAttribute="leading" secondItem="els-8P-d5R" secondAttribute="leading" id="eYp-Gw-CtG"/>
+                            <constraint firstItem="QHL-9p-ghf" firstAttribute="leading" secondItem="daI-Ul-cLg" secondAttribute="trailing" constant="25" id="evN-de-Xg2"/>
+                            <constraint firstItem="d7d-6j-P7T" firstAttribute="width" secondItem="1CT-0D-3iV" secondAttribute="width" id="hKk-Tx-Sn7"/>
+                            <constraint firstItem="els-8P-d5R" firstAttribute="top" secondItem="1CT-0D-3iV" secondAttribute="topMargin" constant="100" id="q0P-rA-Iup"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="8C8-tz-eEI"/>
+                                <exclude reference="T5d-OY-RYH"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="backToRip" destination="d7d-6j-P7T" id="GmX-FH-pum"/>
+                        <outlet property="monsterStatsHealth" destination="QHL-9p-ghf" id="lSf-2d-WDj"/>
+                        <outlet property="monsterStatsName" destination="daI-Ul-cLg" id="NTD-La-O4I"/>
+                        <outlet property="monsterStatsPic" destination="els-8P-d5R" id="1x4-Iw-E3c"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="B8s-Hb-uhI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VbT-Rx-Seq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1654" y="477"/>
+            <point key="canvasLocation" x="1630" y="477"/>
         </scene>
     </scenes>
     <resources>
         <image name="monstersBackground" width="250" height="444"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="cXP-bm-12W"/>
+    </inferredMetricsTieBreakers>
 </document>

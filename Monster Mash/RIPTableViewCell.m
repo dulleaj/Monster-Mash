@@ -8,7 +8,6 @@
 
 #import "RIPTableViewCell.h"
 
-
 @implementation RIPTableViewCell
 
 - (void)awakeFromNib {
@@ -27,7 +26,6 @@
     UIView * backgroundView = [[UIView alloc] init];
     [backgroundView setBackgroundColor:[UIColor whiteColor]];
     [self setBackgroundView:backgroundView];
-    
 }
 
 @end

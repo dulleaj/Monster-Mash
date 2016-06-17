@@ -10,6 +10,7 @@
 #import "Monsters.h"
 #import "RIPViewController.h"
 #import "RIPTableViewCell.h"
+#import "StatsViewController.h"
 
 @interface ViewController ()
 
@@ -1241,6 +1242,11 @@
     RIPViewController* transtion = segue.destinationViewController;
     
     transtion.defeatedMonsterList = self.defeatedMonsters;
+    transtion.userWinCount = self.winCount;
+
 }
+
+
+//Just need to setup getting back from segue. Started to from Stats. Also - stats won't keep info?
 
 @end

@@ -12,4 +12,6 @@
 
 @property NSMutableArray* defeatedMonsterList;
 
+@property int userWinCount;
+
 @end
