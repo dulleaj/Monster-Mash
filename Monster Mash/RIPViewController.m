@@ -6,6 +6,7 @@
 //  Copyright © 2016 Andrew Dulle. All rights reserved.
 //
 
+#import "ViewController.h"
 #import "RIPViewController.h"
 #import "RIPTableViewCell.h"
 #import "Monsters.h"
@@ -24,8 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  
-    //[self.killTableView reloadData];
+    
+    [self.killTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,7 +39,7 @@
     
     self.monster = [[Monsters alloc] init];
     
-    int intFromDefeatedArray = [[self.defeatedMonsterList objectAtIndex:indexPath.row] intValue];
+    int intFromDefeatedArray = [[self.ripDefeatedMonsterList objectAtIndex:indexPath.row] intValue];
     
     [self.monster monsterRoster:intFromDefeatedArray and:self.userWinCount];
     
@@ -56,25 +57,34 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.defeatedMonsterList.count;
+    return self.ripDefeatedMonsterList.count;
 }
 
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    [self performSegueWithIdentifier:@"statsSegue" sender:self];
+    [self performSegueWithIdentifier:@"fromRIPToStats" sender:self];
     
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    StatsViewController* transition = segue.destinationViewController;
-    
-    transition.monsterPicRIP = self.monster.monsterFrontImages[0];
-    transition.monsterIconRIP = self.monster.element;
-    transition.monsterNameRIP = self.monster.name;
-    transition.monsterHealthRIP = self.monster.health;
-
+    if ([segue.identifier isEqualToString:@"fromRIPToStats"]){
+        
+        StatsViewController* transition = segue.destinationViewController;
+        
+        transition.monsterPicRIP = self.monster.monsterFrontImages[0];
+        transition.monsterIconRIP = self.monster.element;
+        transition.monsterNameRIP = self.monster.name;
+        transition.monsterHealthRIP = self.monster.health;
+        transition.statsDefeatedMonsterList = self.ripDefeatedMonsterList;
+        
+    }else if ([segue.identifier isEqualToString:@"fromRIPtoHome"]) {
+        
+        ViewController* transition = segue.destinationViewController;
+        
+        transition.homeDefeatedMonsterList = self.ripDefeatedMonsterList;
+    }
 }
 
 

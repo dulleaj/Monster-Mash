@@ -143,6 +143,8 @@
     self.previousButton.hidden = YES;
     [self hideUserButtons];
 
+    self.homeDefeatedMonsterList = [[NSMutableArray alloc] init];
+    
     [self loadRankings];
     
     NSString* userImage = [NSString stringWithFormat:@"5L%d",self.currentLevel];
@@ -172,7 +174,7 @@
 // START BUTTON
 - (IBAction)startButtonWasTapped:(id)sender {
     
-    self.defeatedMonsters = [[NSMutableArray alloc] init];
+    //self.homeDefeatedMonsterList = [[NSMutableArray alloc] init];
     
     [self loadStoreItems];
     [self generateOppMonster];
@@ -377,7 +379,6 @@
 // HOME TIMER IS CALLED
 - (void)userGoesHome:(BOOL)animated{
     
-    //[self setLevel];
     [self updateMonsterLevels];
     self.startButton.hidden = NO;
     self.restInPeaceButton.hidden = NO;
@@ -1000,7 +1001,7 @@
     self.view.backgroundColor = [UIColor greenColor];
     self.fightBackground.alpha = 0.5;
     
-    [self.defeatedMonsters addObject:[NSNumber numberWithInt:self.opp.monsterInt]];
+    [self.homeDefeatedMonsterList addObject:[NSNumber numberWithInt:self.opp.monsterInt]];
     
     self.cash += 10;
     self.winCount +=1;
@@ -1042,7 +1043,7 @@
     [self.defaults setInteger:self.winCount forKey:@"Wins"];
     [self.defaults setInteger:self.lossCount forKey:@"Losses"];
     [self.defaults setInteger:self.currentLevel forKey:@"Level"];
-    [self.defaults setObject:self.defeatedMonsters forKey:@"Defeated Monsters"];
+    [self.defaults setObject:self.homeDefeatedMonsterList forKey:@"Defeated Monsters"];
     
     [self.defaults synchronize];
     
@@ -1059,7 +1060,8 @@
     self.currentLevel = (int)[self.defaults integerForKey:@"Level"];
     self.level2AnimationWasViewed = [self.defaults boolForKey:@"Animation 2 Viewed"];
     self.level3AnimationWasViewed = [self.defaults boolForKey:@"Animation 3 Viewed"];
-    self.defeatedMonsters = [self.defaults objectForKey:@"Defeated Monsters"];
+    self.homeDefeatedMonsterList = [[self.defaults objectForKey:@"Defeated Monsters"] mutableCopy];
+    
 }
 
 
@@ -1241,12 +1243,12 @@
     
     RIPViewController* transtion = segue.destinationViewController;
     
-    transtion.defeatedMonsterList = self.defeatedMonsters;
+    transtion.ripDefeatedMonsterList = self.homeDefeatedMonsterList;
+    
     transtion.userWinCount = self.winCount;
 
 }
 
 
-//Just need to setup getting back from segue. Started to from Stats. Also - stats won't keep info?
-
+//everything is good except for when I click on a cell in the RIP, it sends the wrong monster info to Stats.
 @end

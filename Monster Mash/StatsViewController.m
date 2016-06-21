@@ -7,12 +7,12 @@
 //
 
 #import "StatsViewController.h"
+#import "RIPViewController.h"
 
 @interface StatsViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *monsterStatsPic;
 @property (weak, nonatomic) IBOutlet UILabel *monsterStatsName;
 @property (weak, nonatomic) IBOutlet UILabel *monsterStatsHealth;
-@property (weak, nonatomic) IBOutlet UIButton *backToRip;
 
 @end
 
@@ -36,10 +36,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)backToRIPWasPressed:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    [self performSegueWithIdentifier:@"backToRIPSegue" sender:self];
+    RIPViewController* transition = segue.destinationViewController;
+    
+    transition.ripDefeatedMonsterList = self.statsDefeatedMonsterList;
+    
 }
+
 
 /*
 #pragma mark - Navigation

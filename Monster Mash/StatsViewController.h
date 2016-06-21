@@ -14,5 +14,6 @@
 @property NSString* monsterNameRIP;
 @property NSString* monsterIconRIP;
 @property int monsterHealthRIP;
+@property NSMutableArray* statsDefeatedMonsterList;
 
 @end

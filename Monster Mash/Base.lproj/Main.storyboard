@@ -582,7 +582,7 @@
                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Q2p-pE-Mfy" kind="show" id="y4S-AC-ih0"/>
+                                    <segue destination="Q2p-pE-Mfy" kind="show" identifier="fromHomeToRIP" id="y4S-AC-ih0"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -811,6 +811,9 @@
                                     <constraint firstAttribute="height" constant="50" id="Tq7-o0-bQi"/>
                                 </constraints>
                                 <state key="normal" title="Back"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="fromRIPtoHome" id="TwU-T8-l4P"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -827,7 +830,7 @@
                     <connections>
                         <outlet property="backButton" destination="mkN-ni-PAv" id="7aw-YH-2Le"/>
                         <outlet property="killTableView" destination="K9d-eD-Tab" id="pOY-za-nHg"/>
-                        <segue destination="JVN-HW-yz8" kind="show" identifier="statsSegue" id="acb-Nq-ZCg"/>
+                        <segue destination="JVN-HW-yz8" kind="show" identifier="fromRIPToStats" id="acb-Nq-ZCg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hXY-3O-Dvp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -883,8 +886,7 @@
                                 </constraints>
                                 <state key="normal" title="Back"/>
                                 <connections>
-                                    <action selector="backToRIPWasPressed:" destination="JVN-HW-yz8" eventType="touchUpInside" id="rgr-8T-1PP"/>
-                                    <segue destination="Q2p-pE-Mfy" kind="show" identifier="backToRIPSegue" id="cXP-bm-12W"/>
+                                    <segue destination="Q2p-pE-Mfy" kind="show" identifier="fromStatsToRIP" id="cH0-RI-cXa"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -910,7 +912,6 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="backToRip" destination="d7d-6j-P7T" id="GmX-FH-pum"/>
                         <outlet property="monsterStatsHealth" destination="QHL-9p-ghf" id="lSf-2d-WDj"/>
                         <outlet property="monsterStatsName" destination="daI-Ul-cLg" id="NTD-La-O4I"/>
                         <outlet property="monsterStatsPic" destination="els-8P-d5R" id="1x4-Iw-E3c"/>
@@ -925,6 +926,6 @@
         <image name="monstersBackground" width="250" height="444"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cXP-bm-12W"/>
+        <segue reference="cH0-RI-cXa"/>
     </inferredMetricsTieBreakers>
 </document>

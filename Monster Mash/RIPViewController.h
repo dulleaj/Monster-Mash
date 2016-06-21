@@ -10,7 +10,7 @@
 
 @interface RIPViewController : UIViewController
 
-@property NSMutableArray* defeatedMonsterList;
+@property NSMutableArray* ripDefeatedMonsterList;
 
 @property int userWinCount;
 
