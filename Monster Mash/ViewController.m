@@ -1245,7 +1245,7 @@
     
     transtion.ripDefeatedMonsterList = self.homeDefeatedMonsterList;
     
-    transtion.userWinCount = self.winCount;
+    transtion.ripUserWinCount = self.winCount;
 
 }
 

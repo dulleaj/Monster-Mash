@@ -10,10 +10,8 @@
 
 @interface StatsViewController : UIViewController
 
-@property NSString* monsterPicRIP;
-@property NSString* monsterNameRIP;
-@property NSString* monsterIconRIP;
-@property int monsterHealthRIP;
+@property int statsMonsterInt;
+@property int statsUserWinCount;
 @property NSMutableArray* statsDefeatedMonsterList;
 
 @end

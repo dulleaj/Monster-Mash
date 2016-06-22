@@ -12,6 +12,6 @@
 
 @property NSMutableArray* ripDefeatedMonsterList;
 
-@property int userWinCount;
+@property int ripUserWinCount;
 
 @end

@@ -17,7 +17,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property RIPTableViewCell* cell;
 @property Monsters* monster;
-
+@property StatsViewController* nextViewMonster;
+@property int nextViewMonsterInt;
 
 @end
 
@@ -39,16 +40,16 @@
     
     self.monster = [[Monsters alloc] init];
     
-    int intFromDefeatedArray = [[self.ripDefeatedMonsterList objectAtIndex:indexPath.row] intValue];
+    int monsterInt = [[self.ripDefeatedMonsterList objectAtIndex:indexPath.row] intValue];
     
-    [self.monster monsterRoster:intFromDefeatedArray and:self.userWinCount];
+    [self.monster monsterRoster:monsterInt and:self.ripUserWinCount];
     
     self.cell = [tableView dequeueReusableCellWithIdentifier:@"defeatedMonster" forIndexPath:indexPath];
     
     self.cell.textLabel.text = self.monster.name;
     
-    NSString* imageString = self.monster.monsterFrontImages[0];
-    self.cell.imageView.image = [UIImage imageNamed:imageString];
+    NSString* pic = self.monster.monsterFrontImages[0];
+    self.cell.imageView.image = [UIImage imageNamed:pic];
     
     return self.cell;
     
@@ -63,8 +64,9 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    [self performSegueWithIdentifier:@"fromRIPToStats" sender:self];
+    self.nextViewMonsterInt = [[self.ripDefeatedMonsterList objectAtIndex:indexPath.row] intValue];
     
+    [self performSegueWithIdentifier:@"fromRIPToStats" sender:self];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -73,10 +75,10 @@
         
         StatsViewController* transition = segue.destinationViewController;
         
-        transition.monsterPicRIP = self.monster.monsterFrontImages[0];
-        transition.monsterIconRIP = self.monster.element;
-        transition.monsterNameRIP = self.monster.name;
-        transition.monsterHealthRIP = self.monster.health;
+        transition.statsMonsterInt = self.nextViewMonsterInt;
+        
+        transition.statsUserWinCount = self.ripUserWinCount;
+        
         transition.statsDefeatedMonsterList = self.ripDefeatedMonsterList;
         
     }else if ([segue.identifier isEqualToString:@"fromRIPtoHome"]) {

@@ -8,11 +8,13 @@
 
 #import "StatsViewController.h"
 #import "RIPViewController.h"
+#import "Monsters.h"
 
 @interface StatsViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *monsterStatsPic;
 @property (weak, nonatomic) IBOutlet UILabel *monsterStatsName;
 @property (weak, nonatomic) IBOutlet UILabel *monsterStatsHealth;
+@property Monsters* monster;
 
 @end
 
@@ -22,12 +24,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSString* imageString = self.monsterPicRIP;
-    self.monsterStatsPic.image = [UIImage imageNamed:imageString];
+    self.monster = [[Monsters alloc] init];
+
+    [self.monster monsterRoster:self.statsMonsterInt and:self.statsUserWinCount];
     
-    self.monsterStatsName.text = [NSString stringWithFormat:@"%@  %@",self.monsterIconRIP, self.monsterNameRIP];
+    self.monsterStatsName.text = self.monster.name;
+    self.monsterStatsHealth.text = [NSString stringWithFormat:@"Health: %d", self.monster.health];
     
-    self.monsterStatsHealth.text = [NSString stringWithFormat:@"Health: %d",self.monsterHealthRIP];
+    NSString* pic = self.monster.monsterFrontImages[0];
+    self.monsterStatsPic.image = [UIImage imageNamed:pic];
+    
     
 }
 
@@ -41,7 +47,6 @@
     RIPViewController* transition = segue.destinationViewController;
     
     transition.ripDefeatedMonsterList = self.statsDefeatedMonsterList;
-    
 }
 
 
